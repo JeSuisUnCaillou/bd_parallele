@@ -12,4 +12,8 @@ class Frame < ActiveRecord::Base
     ecomic.name if ecomic
   end
 
+  def first_child
+    children.first unless children.empty?
+  end
+  
 end

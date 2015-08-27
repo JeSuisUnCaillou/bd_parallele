@@ -4,7 +4,7 @@ class FramesController < ApplicationController
 
   def ajax_next
     frame = Frame.find(params[:frame_id])
-    render partial: "frames/frame_li", locals: { frame: frame }
+    render partial: "frames/frame_li", locals: { frame: frame.first_child }
   end
 
 
@@ -70,6 +70,6 @@ class FramesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def frame_params
-      params.require(:frame).permit(:name, :ecomic_id)
+      params.require(:frame).permit(:name, :ecomic_id, :parent_id)
     end
 end

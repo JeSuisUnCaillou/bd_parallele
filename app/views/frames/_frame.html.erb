@@ -1,6 +1,6 @@
-<% frame ||= nil %>
+<% frame ||= Frame.new(name: "--NO FRAME--") %>
 
 <%= frame.name %>
 
 <!-- bouton suivant -->
-<%= link_to "next", "#", class: "btn btn-default next", "data-next" => frame.id %>
+<%= link_to "next", "#", class: "btn btn-default next", "data-next" => frame.id if frame.id && frame.has_children? %>
