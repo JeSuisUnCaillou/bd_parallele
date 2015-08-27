@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'bootstrap-generators', '~> 3.3.4'
+gem "awesome_print"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'

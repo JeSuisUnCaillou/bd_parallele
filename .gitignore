@@ -53,5 +53,5 @@ bower.json
 .powenv
 
 # Temporary swap files
-.swp
+*.swp
 

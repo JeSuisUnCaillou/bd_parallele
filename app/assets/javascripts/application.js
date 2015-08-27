@@ -18,13 +18,23 @@
 
 $(document).on("ready page:load", function() {
 //$( document ).ready(function() {
-    console.log( "ready!" );
+    console.log( "ready to read !" );
 
-    $("#next").on("click", Frame.next);
+    $(".next").on("click", Frame.next);
+    console.log($("#next"));
 });
 
-window.Frame = {}
+Frame = {}
 
 Frame.next = function() {
   console.log("next !");
+  frame_id = $(this).attr("data-next");
+  $.ajax({ method: "GET",
+           url: "/ajax_next",
+           data: {frame_id: frame_id}
+         }
+  ).done(function(html) {
+    $("#ecomic_list").append(html);
+  });
+
 };

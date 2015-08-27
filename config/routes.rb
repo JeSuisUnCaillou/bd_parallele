@@ -1,6 +1,8 @@
 BdParallele::Application.routes.draw do
   resources :ecomics
 
+  get "ajax_next" => "frames#ajax_next"
+
   resources :frames
 
   get "home/index"

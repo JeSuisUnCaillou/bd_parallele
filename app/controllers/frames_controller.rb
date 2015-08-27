@@ -1,6 +1,12 @@
 class FramesController < ApplicationController
   before_action :set_frame, only: [:show, :edit, :update, :destroy]
 
+  def ajax_next
+    frame = Frame.find(params[:frame_id])
+    render partial: "frames/frame_li", locals: { frame: frame }
+  end
+
+
   # GET /frames
   # GET /frames.json
   def index
