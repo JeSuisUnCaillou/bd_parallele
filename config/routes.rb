@@ -1,4 +1,6 @@
 BdParallele::Application.routes.draw do
+  resources :ecomics
+
   resources :frames
 
   get "home/index"

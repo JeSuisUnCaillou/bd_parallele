@@ -1,0 +1,29 @@
+<div class="page-header">
+  <%= link_to new_ecomic_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Ecomic
+  <% end %>
+  <h1>Listing ecomics</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Name</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @ecomics) do |ecomic| %>
+            <td><%= ecomic.name %></td>
+            <td><%= link_to 'Show', ecomic %></td>
+        <td><%= link_to 'Edit', edit_ecomic_path(ecomic) %></td>
+        <td><%= link_to 'Destroy', ecomic, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

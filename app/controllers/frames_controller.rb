@@ -69,6 +69,6 @@ class FramesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def frame_params
-      params.require(:frame).permit(:name)
+      params.require(:frame).permit(:name, :ecomic_id)
     end
 end

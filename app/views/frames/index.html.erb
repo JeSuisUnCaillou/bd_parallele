@@ -11,6 +11,7 @@
     <thead>
       <tr>
             <th>Name</th>
+            <th>Ecomic</th>
             <th></th>
         <th></th>
         <th></th>
@@ -20,6 +21,7 @@
     <tbody>
       <%= content_tag_for(:tr, @frames) do |frame| %>
             <td><%= frame.name %></td>
+            <td><%= frame.ecomic_id %> : <%= frame.ecomic.name %></td>
             <td><%= link_to 'Show', frame %></td>
         <td><%= link_to 'Edit', edit_frame_path(frame) %></td>
         <td><%= link_to 'Destroy', frame, method: :delete, data: { confirm: 'Are you sure?' } %></td>
