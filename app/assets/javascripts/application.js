@@ -16,8 +16,8 @@
 //= require bootstrap
 //= require_tree .
 
-
-$( document ).ready(function() {
+$(document).on("ready page:load", function() {
+//$( document ).ready(function() {
     console.log( "ready!" );
 
     $("#next").on("click", Frame.next);
