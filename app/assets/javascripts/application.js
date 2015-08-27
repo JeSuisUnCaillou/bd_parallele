@@ -15,3 +15,16 @@
 //= require turbolinks
 //= require bootstrap
 //= require_tree .
+
+
+$( document ).ready(function() {
+    console.log( "ready!" );
+
+    $("#next").on("click", Frame.next);
+});
+
+window.Frame = {}
+
+Frame.next = function() {
+  console.log("next !");
+};
