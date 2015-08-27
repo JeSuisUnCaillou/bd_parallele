@@ -1,1 +1,2 @@
-# bd_parallele
+# BD à univers parallèles, Caillou style.
+
