@@ -20,11 +20,13 @@ $(document).on("ready page:load", function() {
 //$( document ).ready(function() {
     console.log( "ready to read !" );
 
-    $(".next").on("click", Frame.next);
+    Frame.add_next_event($(".next"));
 });
+
 
 Frame = {}
 
+//NEXT EVENT
 Frame.next = function() {
   console.log("next !");
   button = $(this)
@@ -43,10 +45,16 @@ Frame.next = function() {
     //ON DETECTE LES NOUVEAUX BOUTONS
     new_buttons = $(html).find(".next")
     if (new_buttons.length != 0) {
-      console.log("Nouveaux boutons: " + new_buttons.size());
       // ON AJOUTE L'EVENT NEXT AUX NOUVEAUX BOUTONS
-      new_buttons.each(function(){ $(".next[data-next='"+$(this).attr("data-next")+"']").on("click", Frame.next) });
+      Frame.add_next_event(new_buttons);
     }
   });
-
 };
+
+
+//Ajoute l'évènement Frame.next sur une liste d'éléments
+Frame.add_next_event = function(elements){
+  elements.each(function(){ $(".next[data-next='"+$(this).attr("data-next")+"']").on("click", Frame.next) });
+};
+
+

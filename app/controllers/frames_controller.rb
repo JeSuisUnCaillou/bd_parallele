@@ -35,24 +35,29 @@ class FramesController < ApplicationController
     @frame = Frame.new(frame_params)
 
     if @frame.save
+      flash[:success] = "Frame #{@frame.name} saved"
       redirect_to ecomic_frames_path(@ecomic)
     else
-      #TODO
+      flash[:error] = "The frame #{@frame.name} hasn't been saved"
+      redirect_to new_ecomic_frame_path(@ecomic, @frame)
     end
   end
 
   # PATCH/PUT /frames/1
   def update
     if @frame.update(frame_params)
+      flash[:success] = "Frame #{@frame.name} saved"
       redirect_to ecomic_frames_path(@ecomic)
     else
-      #TODO
+      flash[:error] = "The frame #{@frame.name} hasn't been saved"
+      redirect_to edit_ecomic_frame_path(@ecomic, @frame)
     end
   end
 
   # DELETE /frames/1
   def destroy
     @frame.destroy
+    flash[:success] = "Frame #{@frame.name} deleted"
     redirect_to ecomic_frames_path(@ecomic)
   end
 
@@ -70,6 +75,6 @@ class FramesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def frame_params
-      params.require(:frame).permit(:name, :ecomic_id, :parent_id)
+      params.require(:frame).permit(:name, :ecomic_id, :parent_id, :picture)
     end
 end

@@ -13,6 +13,7 @@
       <tr>
         <th>Name</th>
         <th>Ecomic</th>
+        <th>Parent</th>
         <th></th>
         <th></th>
         <th></th>
@@ -23,6 +24,7 @@
       <%= content_tag_for(:tr, @frames) do |frame| %>
         <td><%= frame.name %></td>
         <td><%= frame.ecomic_id %> : <%= frame.ecomic_name %></td>
+        <td><%= frame.parent_id %> : <%= frame.parent_name %></td>
         <td><%= link_to 'Show', ecomic_frame_path(@ecomic, frame) %></td>
         <td><%= link_to 'Edit', edit_ecomic_frame_path(@ecomic, frame) %></td>
         <td><%= link_to 'Destroy', ecomic_frame_path(@ecomic, frame), method: :delete, data: { confirm: 'Are you sure?' } %></td>

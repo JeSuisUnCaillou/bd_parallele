@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150827171724) do
+ActiveRecord::Schema.define(version: 20150827202146) do
 
   create_table "ecomics", force: true do |t|
     t.string   "name"
@@ -25,6 +25,10 @@ ActiveRecord::Schema.define(version: 20150827171724) do
     t.datetime "updated_at"
     t.integer  "ecomic_id"
     t.string   "ancestry"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
   end
 
   add_index "frames", ["ancestry"], name: "index_frames_on_ancestry"
