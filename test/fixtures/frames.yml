@@ -2,6 +2,8 @@
 
 one:
   name: MyString
+  ecomic: two
 
 two:
   name: MyString
+  ecomic: two

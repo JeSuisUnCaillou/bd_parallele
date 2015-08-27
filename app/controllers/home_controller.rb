@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @frames = Frame.all
+    @ecomic = Ecomic.last
+    
   end
 end
