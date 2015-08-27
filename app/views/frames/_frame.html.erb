@@ -1,6 +1,7 @@
 <% frame ||= Frame.new(name: "--NO FRAME--") %>
 
 <%= frame.name %>
+<%= image_tag frame.picture.url, size: "100x100" %>
 
 <!-- bouton suivant -->
 <%= link_to "next", "#", class: "btn btn-default next", "data-next" => frame.id if frame.id && frame.has_children? %>
