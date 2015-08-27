@@ -1,9 +1,9 @@
 <div class="page-header">
-  <%= link_to frames_path, class: 'btn btn-default' do %>
+  <%= link_to ecomic_frames_path(@ecomic), class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
     Back
   <% end %>
-  <%= link_to edit_frame_path(@frame), class: 'btn btn-primary' do %>
+  <%= link_to edit_ecomic_frame_path(@ecomic, @frame), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   <% end %>

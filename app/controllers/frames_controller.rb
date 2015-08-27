@@ -1,5 +1,6 @@
 class FramesController < ApplicationController
   before_action :set_frame, only: [:show, :edit, :update, :destroy]
+  before_action :set_ecomic, only: [:index, :show, :new, :edit, :update, :create, :destroy]
 
   def ajax_next
     frame = Frame.find(params[:frame_id])
@@ -8,13 +9,15 @@ class FramesController < ApplicationController
 
 
   # GET /frames
-  # GET /frames.json
   def index
-    @frames = Frame.all
+    if @ecomic
+      @frames = @ecomic.frames
+    else
+      @frames = Frame.all
+    end
   end
 
   # GET /frames/1
-  # GET /frames/1.json
   def show
   end
 
@@ -28,49 +31,41 @@ class FramesController < ApplicationController
   end
 
   # POST /frames
-  # POST /frames.json
   def create
     @frame = Frame.new(frame_params)
 
-    respond_to do |format|
-      if @frame.save
-        format.html { redirect_to @frame, notice: 'Frame was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @frame }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @frame.errors, status: :unprocessable_entity }
-      end
+    if @frame.save
+      redirect_to ecomic_frames_path(@ecomic)
+    else
+      #TODO
     end
   end
 
   # PATCH/PUT /frames/1
-  # PATCH/PUT /frames/1.json
   def update
-    respond_to do |format|
-      if @frame.update(frame_params)
-        format.html { redirect_to @frame, notice: 'Frame was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @frame.errors, status: :unprocessable_entity }
-      end
+    if @frame.update(frame_params)
+      redirect_to ecomic_frames_path(@ecomic)
+    else
+      #TODO
     end
   end
 
   # DELETE /frames/1
-  # DELETE /frames/1.json
   def destroy
     @frame.destroy
-    respond_to do |format|
-      format.html { redirect_to frames_url }
-      format.json { head :no_content }
-    end
+    redirect_to ecomic_frames_path(@ecomic)
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_frame
       @frame = Frame.find(params[:id])
+    end
+
+    def set_ecomic
+      ecomic_id = params[:ecomic_id]
+      @ecomic = Ecomic.find(ecomic_id) if ecomic_id
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

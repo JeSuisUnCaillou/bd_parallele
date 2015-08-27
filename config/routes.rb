@@ -1,9 +1,12 @@
 BdParallele::Application.routes.draw do
-  resources :ecomics
 
   get "ajax_next" => "frames#ajax_next"
 
-  resources :frames
+  #resources :frames
+
+  resources :ecomics do
+    resources :frames
+  end
 
   get "home/index"
   # The priority is based upon order of creation: first created -> highest priority.
