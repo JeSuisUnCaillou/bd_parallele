@@ -12,6 +12,8 @@
  *= require_tree .
  */
 
+ul{ list-style-type: none; }
+
 .hidden {
   visibility: hidden;
 }
