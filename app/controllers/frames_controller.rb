@@ -8,6 +8,7 @@ class FramesController < ApplicationController
       child = frame.first_child
       nephew = child.cousin
       if nephew
+        #TODO gaffe à l'ordre, si on a cliqué à gauche ou à droite
         render partial: "frames/frame_multiple", locals: { frames: [child, nephew] }
       else
         render partial: "frames/frame", locals: { frame: child }
@@ -19,7 +20,14 @@ class FramesController < ApplicationController
 
   def ajax_prev
     frame = Frame.find(params[:frame_id])
-    render partial: "frames/frame", locals: { frame: frame.parent, has_prev: true }
+    father = frame.parent
+    uncle = father.cousin
+    if uncle 
+        #TODO gaffe à l'ordre, si on a cliqué à gauche ou à droite
+      render partial: "frames/frame_multiple", locals: { frames: [father, uncle], has_prev: true }
+    else
+      render partial: "frames/frame", locals: { frame: father, has_prev: true }
+    end
   end
 
 

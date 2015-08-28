@@ -43,7 +43,7 @@ Frame.next = function() {
     Frame.append_last_frame(html);
 
     //ON CACHE LE BOUTON CLIQUE
-    button.addClass("hidden"); //TODO : cacher le bouton de la frame frère aussi
+    Frame.hide_buttons_and_cousins(button);
 
     //ON DETECTE LES NOUVEAUX BOUTONS
     new_next_buttons = $(html).find(".next")
@@ -68,7 +68,7 @@ Frame.prev = function() {
     Frame.append_first_frame(html);
 
     //ON CACHE LE BOUTON CLIQUE
-    button.addClass("hidden");//TODO : cacher le bouton de la frame frère aussi
+    Frame.hide_buttons_and_cousins(button);
 
     //ON DETECTE LES NOUVEAUX BOUTONS
     new_next_buttons = $(html).find(".next")
@@ -87,6 +87,7 @@ Frame.add_next_event = function(elements){
   });
 };
 
+//Ajoute l'évènement Frame.prev sur une liste d'éléments (lus dans un retour ajax)
 Frame.add_prev_event = function(elements){
   elements.each(function() {
     $(".prev[data-prev='"+$(this).attr("data-prev")+"']").on("click", Frame.prev)
@@ -102,10 +103,13 @@ Frame.append_last_frame = function(html){
   if(nb_frames >= Frame.max_nb_vertical){
     //on enlève la première frame
     frame_li.children().first().remove();
-    //on affiche le bouton prev de la nouvelle premiere frame
-    frame_li.children().first().find(".prev").toggleClass("hidden");//TODO multiple frames
+    //on affiche les boutons prev de la nouvelle premiere frame
+    frame_li.children().first().find(".prev").each(function(){
+      $(this).toggleClass("hidden");
+    });
   }
   frame_li.append(html);//on ajoute la nouvelle dernière frame
+
 };
 
 //Ajoute une frame au début de la liste des frames
@@ -117,10 +121,32 @@ Frame.append_first_frame = function(html) {
   if(nb_frames >= Frame.max_nb_vertical){
     //on enlève la dernière frame
     frame_li.children().last().remove();
-    //on affiche le bouton next de la nouvelle dernière frame
-    frame_li.children().last().find(".next").toggleClass("hidden");//TODO multiple frames
+    //on affiche les boutons next de la nouvelle dernière frame
+    frame_li.children().last().find(".next").each(function(){
+      $(this).toggleClass("hidden");
+    });
   }
   $(html).insertBefore(frame_li.children().first());//on ajoute la nouvelle première frame
 };
 
 
+//Cache un bouton et tous ses cousins
+Frame.hide_buttons_and_cousins = function(button){
+  frame = button.parents(".double_frame").first();
+  if(frame.length == 0){
+    button.addClass("hidden");
+
+  } else {
+    button_class = "";
+
+    if(button.hasClass("next")){
+      button_class = "next"
+    } else if(button.hasClass("prev")){
+      button_class = "prev"
+    }
+    frame_buttons = frame.children(".frame").children("." + button_class);
+    frame_buttons.each(function(){
+      $(this).toggleClass("hidden");
+    });
+  }
+};
