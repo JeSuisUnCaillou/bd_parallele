@@ -1,8 +1,21 @@
+class FrameValidator < ActiveModel::Validator
+  def validate(record)
+    if record.siblings.keep_if{ |f| f.id != record.id }.count >= 2
+      record.errors[:error] << "Only 2 children allowed per frame"
+    end
+  end
+end
+
+class CousinHasOtherUncleError < StandardError
+end
+
 class Frame < ActiveRecord::Base
   belongs_to :ecomic
   validates_presence_of :ecomic
 
   has_ancestry 
+  validates_with FrameValidator
+
   has_attached_file :picture, styles: { thumb: "100x100>" }, default_url: ""
   validates_attachment_content_type :picture, content_type: /\Aimage\/.*\Z/
 
@@ -46,7 +59,7 @@ class Frame < ActiveRecord::Base
     elsif self.child_ids.size <= 1
       self.first_child.get_descendant_at_depth(depth_num)
     else
-      raise StandardError, "You can't get_descendant_at_depth through a descendant with more than one child"
+      raise CousinHasOtherUncleError, "You can't get_descendant_at_depth through a descendant with more than one child"
     end
   end
 
@@ -74,3 +87,4 @@ class Frame < ActiveRecord::Base
   end
   
 end
+

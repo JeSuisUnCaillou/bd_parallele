@@ -6,10 +6,15 @@ class FramesController < ApplicationController
     frame = Frame.find(params[:frame_id])
     if frame.children.count <= 1
       child = frame.first_child
-      nephew = child.cousin
+      begin
+        nephew = child.cousin
+      rescue CousinHasOtherUncleError #TODO virer la frame caca et passer au décalage des parents   
+        nephew = Frame.new(name: "caca")
+      end
+
       if nephew
         #Gaffe à l'ordre, si on a cliqué à gauche ou à droite
-        frames = [child, nephew].sort_by{ |f| f.id }
+        frames = [child, nephew].sort_by{ |f| f.name }
         render partial: "frames/frame_multiple", locals: { frames: frames }
       else
         render partial: "frames/frame", locals: { frame: child }
@@ -23,9 +28,10 @@ class FramesController < ApplicationController
     frame = Frame.find(params[:frame_id])
     father = frame.parent
     uncle = father.cousin
+
     if uncle 
       #Gaffe à l'ordre, si on a cliqué à gauche ou à droite
-      frames = [father, uncle].sort_by{ |f| f.id }
+      frames = [father, uncle].sort_by{ |f| f.name }
       render partial: "frames/frame_multiple", locals: { frames: frames, has_prev: true }
     else
       render partial: "frames/frame", locals: { frame: father, has_prev: true }
@@ -63,7 +69,7 @@ class FramesController < ApplicationController
       flash[:success] = "Frame #{@frame.name} saved"
       redirect_to ecomic_frames_path(@ecomic)
     else
-      flash[:error] = "The frame #{@frame.name} hasn't been saved"
+      flash[:error] = "The frame #{@frame.name} hasn't been saved : #{@frame.errors.values.join(', ')}"
       redirect_to new_ecomic_frame_path(@ecomic, @frame)
     end
   end
@@ -74,7 +80,7 @@ class FramesController < ApplicationController
       flash[:success] = "Frame #{@frame.name} saved"
       redirect_to ecomic_frames_path(@ecomic)
     else
-      flash[:error] = "The frame #{@frame.name} hasn't been saved"
+      flash[:error] = "The frame #{@frame.name} hasn't been saved : #{@frame.errors.values.join(', ')}"
       redirect_to edit_ecomic_frame_path(@ecomic, @frame)
     end
   end
