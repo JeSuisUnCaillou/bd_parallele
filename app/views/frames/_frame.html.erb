@@ -1,4 +1,5 @@
 <% frame ||= Frame.new(name: "--NO FRAME--") %>
+<% has_prev = has_prev.nil? ? false : has_prev %>
 
 
 <li class="">
@@ -7,9 +8,14 @@
 
   <!-- bouton suivant -->
   <% if frame.id && frame.has_children? %>
-    <%= link_to "next", "#", class: "btn btn-default next", "data-next" => frame.id %>
+    <% hidden_next = "hidden" if has_prev %>
+    <%= link_to "next", "#", class: "btn btn-default next #{hidden_next}", "data-next" => frame.id %>
   <% else %>
     <%= link_to "finished!", "#", class: "btn btn-info"%>
   <% end %>
 
+  <% if frame.parent_id %>
+    <% hidden_prev = "hidden" unless has_prev %>
+    <%= link_to "prev", "#", class: "btn btn-default prev #{hidden_prev}", "data-prev" => frame.id %>
+  <% end %>
 </li>

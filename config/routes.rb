@@ -1,6 +1,7 @@
 BdParallele::Application.routes.draw do
 
   get "ajax_next" => "frames#ajax_next"
+  get "ajax_prev" => "frames#ajax_prev"
 
   #resources :frames
 

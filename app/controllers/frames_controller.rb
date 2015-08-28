@@ -7,6 +7,11 @@ class FramesController < ApplicationController
     render partial: "frames/frame", locals: { frame: frame.first_child }
   end
 
+  def ajax_prev
+    frame = Frame.find(params[:frame_id])
+    render partial: "frames/frame", locals: { frame: frame.parent, has_prev: true }
+  end
+
 
   # GET /frames
   def index
