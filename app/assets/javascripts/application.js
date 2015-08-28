@@ -100,7 +100,7 @@ Frame.append_last_frame = function(html, button){
   nb_frames = frame_li.children().size();
   position = Frame.position_of(button);
     
-  //TODO Si il y avait déjà 2 frames de large et que l'on s'apprète à afficher 2 frères (et non un enfant et un cousin), on enlève l'autre colonne
+  //Si il y avait déjà 2 frames de large et que l'on s'apprète à afficher 2 frères (et non un enfant et un cousin), on enlève l'autre colonne
   if( (position == "left" || position == "right") && $(html).hasClass("siblings") ){
     Frame.delete_other_column(position);
   };
@@ -133,8 +133,12 @@ Frame.append_first_frame = function(html) {
       $(this).toggleClass("hidden");
     });
   }
+
+  //TODO : reshow les cousins cachés si là maintenant on a plus qu'une colonne centrale ( ou un truc du genre)
+
   //on ajoute la nouvelle première frame
   $(html).insertBefore(frame_li.children().first());
+
 };
 
 
