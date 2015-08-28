@@ -31,16 +31,16 @@ Frame = { max_nb_vertical: 3,
 
 //NEXT EVENT
 Frame.next = function() {
-  console.log("next !");
   button = $(this)
+  console.log(Frame.position_of(button) + " next!");
   frame_id = button.attr("data-next");
   $.ajax({ method: "GET",
            url: "/ajax_next",
            data: {frame_id: frame_id}
          }
   ).done(function(html) {
-    // ON AJOUTE LA NOUVELLE FRAME
-    Frame.append_last_frame(html);
+    // ON AJOUTE LA NOUVELLE FRAME (ou double frame) et on fait défiler
+    Frame.append_last_frame(html, button);
 
     //ON CACHE LE BOUTON CLIQUE
     Frame.hide_buttons_and_cousins(button);
@@ -57,22 +57,22 @@ Frame.next = function() {
 
 //PREV EVENT
 Frame.prev = function() {
-  console.log("prev!");
   button = $(this);
+  console.log(Frame.position_of(button) + " prev!");
   frame_id = button.attr("data-prev");
   $.ajax({ method: "GET",
            url: "/ajax_prev",
            data: {frame_id: frame_id}
   }).done(function(html) {
-    //ON AJOUTE LA NOUVELLE FRAME
+    //ON AJOUTE LA NOUVELLE FRAME (ou double frame) et on fait défiler
     Frame.append_first_frame(html);
 
     //ON CACHE LE BOUTON CLIQUE
     Frame.hide_buttons_and_cousins(button);
 
     //ON DETECTE LES NOUVEAUX BOUTONS
-    new_next_buttons = $(html).find(".next")
-    new_prev_buttons = $(html).find(".prev")
+    new_next_buttons = $(html).find(".next");
+    new_prev_buttons = $(html).find(".prev");
 
     // ON AJOUTE LES EVENTS PREV & NEXT AUX NOUVEAUX BOUTONS
     Frame.add_next_event(new_next_buttons);
@@ -95,11 +95,17 @@ Frame.add_prev_event = function(elements){
 };
 
 //Ajoute une frame à la fin de la liste des frames
-Frame.append_last_frame = function(html){
+Frame.append_last_frame = function(html, button){
   frame_li = $(Frame.frames_vertical_list);
   nb_frames = frame_li.children().size();
-
-  //Si il y a plus de max_nb_vertical frames
+  position = Frame.position_of(button);
+    
+  //TODO Si il y avait déjà 2 frames de large et que l'on s'apprète à afficher 2 frères (et non un enfant et un cousin), on enlève l'autre colonne
+  if( (position == "left" || position == "right") && $(html).hasClass("siblings") ){
+    Frame.delete_other_column(position);
+  };
+ 
+  //Si il y a plus de max_nb_vertical frames, on fait tout slider
   if(nb_frames >= Frame.max_nb_vertical){
     //on enlève la première frame
     frame_li.children().first().remove();
@@ -108,8 +114,9 @@ Frame.append_last_frame = function(html){
       $(this).toggleClass("hidden");
     });
   }
-  frame_li.append(html);//on ajoute la nouvelle dernière frame
 
+  //on ajoute la nouvelle dernière frame
+  frame_li.append(html);
 };
 
 //Ajoute une frame au début de la liste des frames
@@ -126,27 +133,72 @@ Frame.append_first_frame = function(html) {
       $(this).toggleClass("hidden");
     });
   }
-  $(html).insertBefore(frame_li.children().first());//on ajoute la nouvelle première frame
+  //on ajoute la nouvelle première frame
+  $(html).insertBefore(frame_li.children().first());
 };
 
 
 //Cache un bouton et tous ses cousins
 Frame.hide_buttons_and_cousins = function(button){
-  frame = button.parents(".double_frame").first();
-  if(frame.length == 0){
+  double_frame = button.parents(".double_frame").first();
+
+  if(double_frame.length == 0){
     button.addClass("hidden");
 
   } else {
     button_class = "";
-
     if(button.hasClass("next")){
       button_class = "next"
     } else if(button.hasClass("prev")){
       button_class = "prev"
     }
-    frame_buttons = frame.children(".frame").children("." + button_class);
+    frame_buttons = double_frame.children(".frame").children("." + button_class);
     frame_buttons.each(function(){
       $(this).toggleClass("hidden");
     });
+  }
+
+};
+
+//Position d'un bouton. Renvoie central, left or right
+Frame.position_of = function(button) {
+  frame = button.parents(".frame").first();
+
+  if(frame.hasClass("left_frame")) {
+    return "left";
+  } else if(frame.hasClass("right_frame")) {
+    return "right";
+  } else {
+    return "central";
+  }
+};
+
+//Suprimme l'autre colonne de frames par rapport a la position donnee
+Frame.delete_other_column = function(position) {
+  if(position == "left" || position == "right"){
+
+    //On cache les frames de la colonne opposée
+    frames_to_delete = $(".double_frame").children("."+ Frame.opposite(position) +"_frame");
+    frames_to_delete.each( function() {
+      $(this).addClass("hidden");
+    });
+
+    //On décale les frames de la même colonne
+    frames_to_offset = $(".double_frame").children("."+ position +"_frame");
+    frames_to_offset.each( function(){
+      $(this).addClass("col-md-offset-3");
+    });
+
+  }
+};
+
+//Renvoie l'opposé de la string pour "left" ou "right". renvoie "central" sinon.
+Frame.opposite = function(position){
+  if(position == "left"){
+    return "right";
+  } else if(position == "right"){
+    return "left";
+  } else {
+    return "central";
   }
 };

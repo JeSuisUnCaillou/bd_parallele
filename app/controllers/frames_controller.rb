@@ -20,19 +20,20 @@ class FramesController < ApplicationController
         render partial: "frames/frame", locals: { frame: child }
       end
     else
-      render partial: "frames/frame_multiple", locals: { frames: frame.children }
+      render partial: "frames/frame_multiple", locals: { frames: frame.children, siblings: true }
     end
   end
 
   def ajax_prev
     frame = Frame.find(params[:frame_id])
     father = frame.parent
-    uncle = father.cousin
+    fathers_cousin = father.cousin
+    cousin_is_sibling = father.siblings.include?(fathers_cousin)
 
-    if uncle 
+    if fathers_cousin 
       #Gaffe à l'ordre, si on a cliqué à gauche ou à droite
-      frames = [father, uncle].sort_by{ |f| f.name }
-      render partial: "frames/frame_multiple", locals: { frames: frames, has_prev: true }
+      frames = [father, fathers_cousin].sort_by{ |f| f.name }
+      render partial: "frames/frame_multiple", locals: { frames: frames, has_prev: true, siblings: cousin_is_sibling }
     else
       render partial: "frames/frame", locals: { frame: father, has_prev: true }
     end
