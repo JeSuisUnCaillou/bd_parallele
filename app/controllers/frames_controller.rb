@@ -8,8 +8,9 @@ class FramesController < ApplicationController
       child = frame.first_child
       nephew = child.cousin
       if nephew
-        #TODO gaffe à l'ordre, si on a cliqué à gauche ou à droite
-        render partial: "frames/frame_multiple", locals: { frames: [child, nephew] }
+        #Gaffe à l'ordre, si on a cliqué à gauche ou à droite
+        frames = [child, nephew].sort_by{ |f| f.id }
+        render partial: "frames/frame_multiple", locals: { frames: frames }
       else
         render partial: "frames/frame", locals: { frame: child }
       end
@@ -23,8 +24,9 @@ class FramesController < ApplicationController
     father = frame.parent
     uncle = father.cousin
     if uncle 
-        #TODO gaffe à l'ordre, si on a cliqué à gauche ou à droite
-      render partial: "frames/frame_multiple", locals: { frames: [father, uncle], has_prev: true }
+      #Gaffe à l'ordre, si on a cliqué à gauche ou à droite
+      frames = [father, uncle].sort_by{ |f| f.id }
+      render partial: "frames/frame_multiple", locals: { frames: frames, has_prev: true }
     else
       render partial: "frames/frame", locals: { frame: father, has_prev: true }
     end
