@@ -5,7 +5,13 @@ class FramesController < ApplicationController
   def ajax_next
     frame = Frame.find(params[:frame_id])
     if frame.children.count <= 1
-      render partial: "frames/frame", locals: { frame: frame.first_child }
+      child = frame.first_child
+      nephew = child.cousin
+      if nephew
+        render partial: "frames/frame_multiple", locals: { frames: [child, nephew] }
+      else
+        render partial: "frames/frame", locals: { frame: child }
+      end
     else
       render partial: "frames/frame_multiple", locals: { frames: frame.children }
     end

@@ -1,23 +1,5 @@
-<% frame ||= Frame.new(name: "--NO FRAME--") %>
-<% has_prev = has_prev.nil? ? false : has_prev %>
+<% frame ||= nil %>
 
-
-<li class="">
-  <%= image_tag frame.picture.url, size: "150x100" %>
-
-  <!-- next button -->
-  <% if frame.id && frame.has_children? %>
-    <% hidden_next = "hidden" if has_prev %>
-    <%= link_to "next", "#", class: "btn btn-default next #{hidden_next}", "data-next" => frame.id %>
-  <% else %>
-     finished
-  <% end %>
-
-  <!-- prev button -->
-  <% if frame.parent_id %>
-    <% hidden_prev = "hidden" unless has_prev %>
-    <%= link_to "prev", "#", class: "btn btn-default prev #{hidden_prev}", "data-prev" => frame.id %>
-  <% else %> 
-     Begin
-  <% end %>
-</li>
+<div class="col-md-6 col-md-offset-3">
+  <%= render partial: "frames/frame_view", locals: { frame: frame } %>
+</div>

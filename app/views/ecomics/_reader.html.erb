@@ -1,7 +1,7 @@
 
 <h2><%= @ecomic.name %></h2>
-<ul id="frames_vertical_list">
+<div id="frames_vertical_list" class="row">
 
   <%= render partial: "frames/frame", locals: { frame: @ecomic.first_frame } if @ecomic %>
 
-</ul>
+</div>

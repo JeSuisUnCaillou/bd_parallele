@@ -24,6 +24,7 @@ class Frame < ActiveRecord::Base
     ancestors.reverse.each do |frame|
       return frame if frame.children.count > 1
     end
+    return nil
   end
 
   #True if self is a descendant of frame

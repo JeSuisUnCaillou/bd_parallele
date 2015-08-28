@@ -26,7 +26,8 @@ $(document).on("ready page:load", function() {
 
 
 //TODO : foutre en attribut de Frame les méthodes ajax, ainsi que les noms des classes et attributs des éléments du DOM dont on a besoin
-Frame = { max_nb_vertical: 3 }
+Frame = { max_nb_vertical: 3,
+          frames_vertical_list: "#frames_vertical_list"}
 
 //NEXT EVENT
 Frame.next = function() {
@@ -42,7 +43,7 @@ Frame.next = function() {
     Frame.append_last_frame(html);
 
     //ON CACHE LE BOUTON CLIQUE
-    button.addClass("hidden");
+    button.addClass("hidden"); //TODO : cacher le bouton de la frame frère aussi
 
     //ON DETECTE LES NOUVEAUX BOUTONS
     new_next_buttons = $(html).find(".next")
@@ -67,7 +68,7 @@ Frame.prev = function() {
     Frame.append_first_frame(html);
 
     //ON CACHE LE BOUTON CLIQUE
-    button.addClass("hidden");
+    button.addClass("hidden");//TODO : cacher le bouton de la frame frère aussi
 
     //ON DETECTE LES NOUVEAUX BOUTONS
     new_next_buttons = $(html).find(".next")
@@ -94,7 +95,7 @@ Frame.add_prev_event = function(elements){
 
 //Ajoute une frame à la fin de la liste des frames
 Frame.append_last_frame = function(html){
-  frame_li = $("#frames_vertical_list");
+  frame_li = $(Frame.frames_vertical_list);
   nb_frames = frame_li.children().size();
 
   //Si il y a plus de max_nb_vertical frames
@@ -102,14 +103,14 @@ Frame.append_last_frame = function(html){
     //on enlève la première frame
     frame_li.children().first().remove();
     //on affiche le bouton prev de la nouvelle premiere frame
-    frame_li.children().first().find(".prev").toggleClass("hidden");
+    frame_li.children().first().find(".prev").toggleClass("hidden");//TODO multiple frames
   }
   frame_li.append(html);//on ajoute la nouvelle dernière frame
 };
 
 //Ajoute une frame au début de la liste des frames
 Frame.append_first_frame = function(html) {
-  frame_li = $("#frames_vertical_list");
+  frame_li = $(Frame.frames_vertical_list);
   nb_frames = frame_li.children().size();
 
   //Si il y a plus de max_nb_vertical frames
@@ -117,7 +118,7 @@ Frame.append_first_frame = function(html) {
     //on enlève la dernière frame
     frame_li.children().last().remove();
     //on affiche le bouton next de la nouvelle dernière frame
-    frame_li.children().last().find(".next").toggleClass("hidden");
+    frame_li.children().last().find(".next").toggleClass("hidden");//TODO multiple frames
   }
   $(html).insertBefore(frame_li.children().first());//on ajoute la nouvelle première frame
 };

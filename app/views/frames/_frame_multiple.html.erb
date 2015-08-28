@@ -1,11 +1,10 @@
 <% frames ||= [] %>
 
-<li class="">
-  <ul class="list-inline">
-    <% frames.each do |frame| %>
-    <li>
-      <%= render partial: "frames/frame", locals: { frame: frame} %>
-    </li>
-    <% end %>
-  </ul>
-</li>
+<div class="col-md-12 row">
+<% frames.each do |frame| %>
+  <div class="col-md-6 columns">
+    <%= render partial: "frames/frame_view", locals: { frame: frame} %>
+  </div>
+<% end %>
+</div>
+
