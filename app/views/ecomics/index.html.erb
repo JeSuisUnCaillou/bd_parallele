@@ -21,8 +21,8 @@
     <tbody>
       <%= content_tag_for(:tr, @ecomics) do |ecomic| %>
         <td><%= ecomic.name %></td>
-        <td><%= link_to 'Show frames', ecomic_frames_path(ecomic) %></td>
-        <td><%= link_to 'Show', ecomic %></td>
+        <td><%= link_to 'Read', ecomic %></td>
+        <td><%= link_to 'Manage frames', ecomic_frames_path(ecomic) %></td>
         <td><%= link_to 'Edit', edit_ecomic_path(ecomic) %></td>
         <td><%= link_to 'Destroy', ecomic, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       <% end %>

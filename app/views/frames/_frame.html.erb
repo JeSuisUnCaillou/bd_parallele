@@ -1,7 +1,7 @@
 <% frame ||= Frame.new(name: "--NO FRAME--") %>
 
 
-<div class="">
+<li class="">
 <%#= frame.name %>
   <%= image_tag frame.picture.url, size: "150x100" %>
 
@@ -12,4 +12,4 @@
     <%= link_to "finished!", "#", class: "btn btn-info"%>
   <% end %>
 
-</div>
+</li>

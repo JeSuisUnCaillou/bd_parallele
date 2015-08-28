@@ -4,7 +4,7 @@ class FramesController < ApplicationController
 
   def ajax_next
     frame = Frame.find(params[:frame_id])
-    render partial: "frames/frame_li", locals: { frame: frame.first_child }
+    render partial: "frames/frame", locals: { frame: frame.first_child }
   end
 
 

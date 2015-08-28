@@ -1,6 +1,3 @@
 <h1>Essai de lecteur de BD parallèle</h1>
-<ul id="ecomic_list">
 
-  <%= render partial: "frames/frame_li", locals: { frame: @ecomic.first_frame } if @ecomic %>
-
-</ul>
+<%= render partial: "ecomics/reader", locals: { ecomic: @ecomic } if @ecomic %>

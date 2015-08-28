@@ -1,0 +1,7 @@
+
+<h2><%= @ecomic.name %></h2>
+<ul id="ecomic_list">
+
+  <%= render partial: "frames/frame", locals: { frame: @ecomic.first_frame } if @ecomic %>
+
+</ul>
