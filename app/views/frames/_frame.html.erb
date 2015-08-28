@@ -3,10 +3,9 @@
 
 
 <li class="">
-<%#= frame.name %>
   <%= image_tag frame.picture.url, size: "150x100" %>
 
-  <!-- bouton suivant -->
+  <!-- next button -->
   <% if frame.id && frame.has_children? %>
     <% hidden_next = "hidden" if has_prev %>
     <%= link_to "next", "#", class: "btn btn-default next #{hidden_next}", "data-next" => frame.id %>
@@ -14,6 +13,7 @@
      finished
   <% end %>
 
+  <!-- prev button -->
   <% if frame.parent_id %>
     <% hidden_prev = "hidden" unless has_prev %>
     <%= link_to "prev", "#", class: "btn btn-default prev #{hidden_prev}", "data-prev" => frame.id %>

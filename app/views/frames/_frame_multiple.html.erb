@@ -1,0 +1,11 @@
+<% frames ||= [] %>
+
+<li class="">
+  <ul class="list-inline">
+    <% frames.each do |frame| %>
+    <li>
+      <%= render partial: "frames/frame", locals: { frame: frame} %>
+    </li>
+    <% end %>
+  </ul>
+</li>
