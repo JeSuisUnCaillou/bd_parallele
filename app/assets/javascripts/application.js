@@ -24,7 +24,7 @@ $(document).on("ready page:load", function() {
 });
 
 
-Frame = {}
+Frame = {max_nb_vertical: 3}
 
 //NEXT EVENT
 Frame.next = function() {
@@ -37,7 +37,7 @@ Frame.next = function() {
          }
   ).done(function(html) {
     // ON AJOUTE LA NOUVELLE FRAME
-    $("#ecomic_list").append(html);
+    Frame.append_frame(html);
 
     //ON CACHE LE BOUTON CLIQUE
     button.addClass("hidden");
@@ -51,6 +51,18 @@ Frame.next = function() {
   });
 };
 
+
+//Ajoute une frame à la liste des frames
+Frame.append_frame = function(html){
+  frame_li = $("#frames_vertical_list");
+  nb_frames = frame_li.children().size();
+  console.log(nb_frames);
+  //Si il y a plus de max_nb_vertical frames
+  if(nb_frames >= Frame.max_nb_vertical){
+    frame_li.children().first().remove();//on enlève la première frame
+  }
+  frame_li.append(html);
+};
 
 //Ajoute l'évènement Frame.next sur une liste d'éléments
 Frame.add_next_event = function(elements){
