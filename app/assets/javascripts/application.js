@@ -94,6 +94,7 @@ Frame.add_prev_event = function(elements){
   });
 };
 
+
 //Ajoute une frame à la fin de la liste des frames
 Frame.append_last_frame = function(html, button){
   frame_li = $(Frame.frames_vertical_list);
@@ -119,12 +120,14 @@ Frame.append_last_frame = function(html, button){
   frame_li.append(html);
 };
 
+
 //Ajoute une frame au début de la liste des frames
 Frame.append_first_frame = function(html) {
   frame_li = $(Frame.frames_vertical_list);
   nb_frames = frame_li.children().size();
+  position = Frame.position_of(button);
 
-  //Si il y a plus de max_nb_vertical frames
+  //Si il y a plus de max_nb_vertical frames, on fait tout slider
   if(nb_frames >= Frame.max_nb_vertical){
     //on enlève la dernière frame
     frame_li.children().last().remove();
@@ -133,11 +136,29 @@ Frame.append_first_frame = function(html) {
       $(this).toggleClass("hidden");
     });
   }
+  //On a delete la dernière frame
 
-  //TODO : reshow les cousins cachés si là maintenant on a plus qu'une colonne centrale ( ou un truc du genre)
+  //Reshow les cousins cachés si on a plus qu'une colonne centrale
+  nb_fake_centrals = $(".double_frame").find(".frame.hidden").length;
+  nb_centrals = $(".central").length;
+  if(nb_fake_centrals + nb_centrals == Frame.max_nb_vertical - 1){
+    Frame.show_hidden_cousins(position);
+  }
+  
+  //Si la nouvelle frame est double et qu'on a une simple en top position, on cache une des frames
+  new_html = $(html)
+  new_frame_is_double = $(html).hasClass("double_frame")
+  top_frame = frame_li.children().first();
+  top_frame_is_solo = (!top_frame.hasClass("double_frame")) || (top_frame.find(".frame.hidden").length != 0);
+  if(new_frame_is_double && top_frame_is_solo){
+    console.log("Et tu cache!");
+    top_frame_hidden_position = Frame.position_of_frame(top_frame.find(".frame.hidden"));
+    new_html.find("." + top_frame_hidden_position + "_frame").addClass("hidden");
+    new_html.find("." + Frame.opposite(top_frame_hidden_position) + "_frame").addClass("col-md-offset-3");
+  };
 
   //on ajoute la nouvelle première frame
-  $(html).insertBefore(frame_li.children().first());
+  new_html.insertBefore(frame_li.children().first());
 
 };
 
@@ -164,10 +185,8 @@ Frame.hide_buttons_and_cousins = function(button){
 
 };
 
-//Position d'un bouton. Renvoie central, left or right
-Frame.position_of = function(button) {
-  frame = button.parents(".frame").first();
-
+//Position d'une frame. Renvoie central, left ou right
+Frame.position_of_frame = function(frame) {  
   if(frame.hasClass("left_frame")) {
     return "left";
   } else if(frame.hasClass("right_frame")) {
@@ -175,6 +194,12 @@ Frame.position_of = function(button) {
   } else {
     return "central";
   }
+};
+
+//Position d'un bouton. Renvoie central, left ou right
+Frame.position_of = function(button) {
+  frame = button.parents(".frame").first();
+  return Frame.position_of_frame(frame);
 };
 
 //Suprimme l'autre colonne de frames par rapport a la position donnee
@@ -192,8 +217,19 @@ Frame.delete_other_column = function(position) {
     frames_to_offset.each( function(){
       $(this).addClass("col-md-offset-3");
     });
-
   }
+};
+
+//Révèle les cousins cachés et enlève l'offset sur les parents
+Frame.show_hidden_cousins = function(position){
+  cousins = $("." + Frame.opposite(position) + "_frame.hidden");
+  parents = $("." + position + "_frame.col-md-offset-3");
+  cousins.each( function(){
+    $(this).toggleClass("hidden");
+  });
+  parents.each( function(){
+    $(this).toggleClass("col-md-offset-3");
+  });
 };
 
 //Renvoie l'opposé de la string pour "left" ou "right". renvoie "central" sinon.
@@ -206,3 +242,5 @@ Frame.opposite = function(position){
     return "central";
   }
 };
+
+

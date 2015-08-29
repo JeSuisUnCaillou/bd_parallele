@@ -8,7 +8,7 @@ class FramesController < ApplicationController
       child = frame.first_child
       begin
         nephew = child.cousin
-      rescue CousinHasOtherUncleError #TODO virer la frame caca et passer au décalage des parents   
+      rescue CousinHasOtherUncleError #TODO remplacer la frame "caca" par une frame générique indiquant qu'un choix est présent sur cette case 
         nephew = Frame.new(name: "caca")
       end
 

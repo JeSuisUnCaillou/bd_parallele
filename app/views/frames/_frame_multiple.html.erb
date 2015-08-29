@@ -4,7 +4,7 @@
 
 <div class="col-md-12 row double_frame <%= siblings ? "siblings" : "cousins" %>">
 <% frames.each_with_index do |frame, index| %>
-  <%# We assume that there is only 2 frames maximum %>
+  <%# We assume that there is only 2 frames %>
   <% position = (index == 0) ? "left_frame" : "right_frame" %>
 
   <div class="col-md-6 columns frame <%=position%>">
