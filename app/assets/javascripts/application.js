@@ -115,9 +115,28 @@ Frame.append_last_frame = function(html, button){
       $(this).toggleClass("hidden");
     });
   }
+  //on a delete la première frame
+
+  //si la nouvelle frame est simple (mais que l'on a une double branche - toujours le cas ?), on la décale
+  new_html = $(html)
+  new_is_central = new_html.children(".central").length > 0;
+  has_double_frames = $(".double_frame").length > 0
+  if(has_double_frames && new_is_central){
+    console.log("Time to shift man!");
+    Frame.offset_central_frame(new_html, position);
+  }
+
+  //TODO si on a que des with_offset, on les replace au centre
+  offset_frames = $(".with_offset")
+  if(offset_frames.length == Frame.max_nb_vertical - 1){
+     offset_frames.each( function(){
+       console.log($(this));
+       Frame.remove_offset_central_frame($(this));
+     });
+  };
 
   //on ajoute la nouvelle dernière frame
-  frame_li.append(html);
+  frame_li.append(new_html);
 };
 
 
@@ -147,11 +166,10 @@ Frame.append_first_frame = function(html) {
   
   //Si la nouvelle frame est double et qu'on a une simple en top position, on cache une des frames
   new_html = $(html)
-  new_frame_is_double = $(html).hasClass("double_frame")
+  new_frame_is_double = new_html.hasClass("double_frame")
   top_frame = frame_li.children().first();
   top_frame_is_solo = (!top_frame.hasClass("double_frame")) || (top_frame.find(".frame.hidden").length != 0);
   if(new_frame_is_double && top_frame_is_solo){
-    console.log("Et tu cache!");
     top_frame_hidden_position = Frame.position_of_frame(top_frame.find(".frame.hidden"));
     new_html.find("." + top_frame_hidden_position + "_frame").addClass("hidden");
     new_html.find("." + Frame.opposite(top_frame_hidden_position) + "_frame").addClass("col-md-offset-3");
@@ -243,4 +261,39 @@ Frame.opposite = function(position){
   }
 };
 
+
+//Décale une frame à la position donnée
+Frame.offset_central_frame = function(frame_container, position){
+  frame = frame_container.children(".central").first();
+  if(position == "right"){
+    frame.removeClass("col-md-offset-3");
+    frame.addClass("col-md-offset-6");
+    frame.removeClass("central");
+    frame.addClass("right_frame");
+    frame.addClass("with_offset");
+  } else if(position =="left"){
+    frame.removeClass("col-md-offset-3"); 
+    frame.addClass("left_frame")
+    frame.removeClass("central");
+    frame.addClass("with_offset");
+  } else {
+    console.log("This is not a central frame");
+  }
+};
+
+//Replace au milieu une central_frame décalée
+Frame.remove_offset_central_frame = function(frame, position){
+  if(frame.hasClass("left_frame")){
+    frame.removeClass("left_frame");
+    frame.addClass("central");
+    frame.addClass("col-md-offset-3");
+  } else if(frame.hasClass("right_frame")){
+    frame.removeClass("right_frame");
+    frame.addClass("central");
+    frame.removeClass("col-md-offset-6");
+    frame.addClass("col-md-offset-3");
+  } else {
+    console.log("This was not an offset central frame");
+  }
+};
 

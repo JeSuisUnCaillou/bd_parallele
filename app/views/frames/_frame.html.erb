@@ -1,6 +1,7 @@
 <% frame ||= nil %>
 <% has_prev = has_prev.nil? ? false : has_prev %>
-
-<div class="col-md-6 col-md-offset-3 frame">
-  <%= render partial: "frames/frame_view", locals: { frame: frame, has_prev: has_prev } %>
+<div class="col-md-12 row">
+  <div class="col-md-6 col-md-offset-3 frame central">
+    <%= render partial: "frames/frame_view", locals: { frame: frame, has_prev: has_prev } %>
+  </div>
 </div>

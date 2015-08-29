@@ -2,7 +2,7 @@
 <% has_prev = has_prev.nil? ? false : has_prev %>
 
 <!-- prev button -->
-<% if frame.parent_id %>
+<% if frame.id && frame.parent_id %>
   <% hidden_prev = "hidden" unless has_prev %>
   <%= link_to "prev", "#", class: "btn btn-default prev #{hidden_prev}", "data-prev" => frame.id %>
 <% else %> 
