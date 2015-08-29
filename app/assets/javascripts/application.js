@@ -122,6 +122,7 @@ Frame.append_last_frame = function(html, button){
   new_is_central = new_html.children(".central").length > 0;
   has_double_frames = $(".double_frame").length > 0
   if(has_double_frames && new_is_central){
+    
     Frame.offset_central_frame(new_html, position);
   }
 
@@ -173,9 +174,16 @@ Frame.append_first_frame = function(html) {
     new_html.find("." + top_frame_hidden_position + "_frame").addClass("hidden");
     new_html.find("." + Frame.opposite(top_frame_hidden_position) + "_frame").addClass("col-md-offset-3");
     
-    //Si on a des central frames en dessous, on les décale sur la branche non terminée
+    //Si on a des central frames en dessous, on cherche la branche soit terminée, soit avec 2 enfants, en on décale les centrale frames sur l'autre branche
     central_frames = $(".central");
-    offset_position = Frame.opposite( Frame.position_of_frame(new_html.find(".frame.no_children")) );
+    no_children_frame = new_html.find(".frame.no_children");
+    dead_end_frame = no_children_frame
+    if(no_children_frame.length == 0){
+      dead_end_frame = new_html.find(".frame.several_children");
+    };//now we got the right dead_end_frame
+
+    offset_position = Frame.opposite( Frame.position_of_frame(dead_end_frame) );
+    console.log("offset_position: " + offset_position);
     central_frames.each( function(){
       Frame.offset_central_frame($(this), offset_position);
     });
