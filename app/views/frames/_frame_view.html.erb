@@ -7,7 +7,7 @@
 
 
 
-<div class="col-md-6 <%=offset%> frame <%= position %> <%=no_children%> <%=several_children%>">
+<div class="col-md-6 <%=offset%> frame <%= position %> <%=no_children%> <%=several_children%>" data-parent-id="<%=frame.parent_id%>" data-id="<%=frame.id%>">
 
   <!-- prev button -->
   <% if frame.id && frame.parent_id %>

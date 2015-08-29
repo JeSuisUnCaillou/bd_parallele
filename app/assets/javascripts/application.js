@@ -65,7 +65,7 @@ Frame.prev = function() {
            data: {frame_id: frame_id}
   }).done(function(html) {
     //ON AJOUTE LA NOUVELLE FRAME (ou double frame) et on fait défiler
-    Frame.append_first_frame(html);
+    Frame.append_first_frame(html, button);
 
     //ON CACHE LE BOUTON CLIQUE
     Frame.hide_buttons_and_cousins(button);
@@ -140,10 +140,11 @@ Frame.append_last_frame = function(html, button){
 
 
 //Ajoute une frame au début de la liste des frames
-Frame.append_first_frame = function(html) {
+Frame.append_first_frame = function(html, button) {
   frame_li = $(Frame.frames_vertical_list);
   nb_frames = frame_li.children().size();
   position = Frame.position_of(button);
+  frame = button.parents(".frame").first();
 
   //Si il y a plus de max_nb_vertical frames, on fait tout slider
   if(nb_frames >= Frame.max_nb_vertical){
@@ -163,37 +164,42 @@ Frame.append_first_frame = function(html) {
     Frame.show_hidden_cousins(position);
   }
   
-  //Si la nouvelle frame est double et qu'on a une simple ou des siblings en top position, on cache une des double-frames
+  //Si la nouvelle frame est double et qu'on a une simple (mais pas offset) ou des siblings en top position, on cache une des double-frames
   new_html = $(html)
   new_frame_is_double = new_html.hasClass("double_frame")
   top_frame = frame_li.children().first();
-  top_frame_is_solo = (!top_frame.hasClass("double_frame")) || (top_frame.find(".frame.hidden").length != 0);
-  top_frame_is_siblings = top_frame.hasClass("siblings")
+  top_frame_is_solo = (!top_frame.hasClass("double_frame")) || ($(top_frame).find(".frame.hidden").length > 0);
+  top_frame_is_siblings = top_frame.hasClass("siblings");
 
   if(new_frame_is_double && (top_frame_is_solo || top_frame_is_siblings )){
-    top_frame_hidden_position = Frame.position_of_frame(top_frame.find(".frame.hidden"));
-    //TODO : get position even if siblings
-    new_html.find("." + top_frame_hidden_position + "_frame").addClass("hidden");
-    new_html.find("." + Frame.opposite(top_frame_hidden_position) + "_frame").addClass("col-md-offset-3");
+    //TODO RAJOUTER CONDITION SUR SI ON VA LA DECALER OU PAS en fonction de $(top_frame).children(".with_offset").length > 0 mais avant qu'on ai pu mettre l'offset. facile hein connard ?
+    console.log("Et tu cache!");
+    parent_frame = new_html.find(".frame[data-id='"+frame.attr("data-parent-id")+"']");
+    parent_position = Frame.position_of_frame(parent_frame);
+
+    new_html.find("." + Frame.opposite(parent_position) + "_frame").addClass("hidden");
+    new_html.find("." + parent_position + "_frame").addClass("col-md-offset-3");
     
-    //Si on a des central frames en dessous, on cherche la branche soit terminée, soit avec 2 enfants, en on décale les centrale frames sur l'autre branche
+    //Si on a des central frames en dessous, on cherche la branche soit terminée, soit avec 2 enfants, en on décale les centrale frames sur la branche opposée
     central_frames = $(".central");
     no_children_frame = new_html.find(".frame.no_children");
     dead_end_frame = no_children_frame
     if(no_children_frame.length == 0){
       dead_end_frame = new_html.find(".frame.several_children");
     };//now we got the right dead_end_frame
-
     offset_position = Frame.opposite( Frame.position_of_frame(dead_end_frame) );
-    console.log("offset_position: " + offset_position);
     central_frames.each( function(){
       Frame.offset_central_frame($(this), offset_position);
     });
-  };
 
-  //on ajoute la nouvelle première frame
-  new_html.insertBefore(frame_li.children().first());
+    //TODO : placer ça à un endroit qui nous permettrait de faire le décalage
+    //on ajoute la nouvelle première frame
+    new_html.insertBefore(frame_li.children().first());
 
+  } else {
+    //on ajoute la nouvelle première frame
+    new_html.insertBefore(frame_li.children().first());
+  }
 };
 
 
