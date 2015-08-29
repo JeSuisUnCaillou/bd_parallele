@@ -6,8 +6,9 @@
 <% frames.each_with_index do |frame, index| %>
   <%# We assume that there is only 2 frames %>
   <% position = (index == 0) ? "left_frame" : "right_frame" %>
+  <% no_children = frame.has_children? ? "" : "no_children" %>
 
-  <div class="col-md-6 columns frame <%=position%>">
+  <div class="col-md-6 columns frame <%=position%> <%=no_children%>">
     <%= render partial: "frames/frame_view", locals: { frame: frame, has_prev: has_prev} %>
   </div>
 <% end %>

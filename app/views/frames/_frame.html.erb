@@ -1,7 +1,8 @@
 <% frame ||= nil %>
 <% has_prev = has_prev.nil? ? false : has_prev %>
+<% no_children = frame.has_children? ? "" : "no_children" %>
 <div class="col-md-12 row">
-  <div class="col-md-6 col-md-offset-3 frame central">
+  <div class="col-md-6 col-md-offset-3 frame central <%=no_children%>">
     <%= render partial: "frames/frame_view", locals: { frame: frame, has_prev: has_prev } %>
   </div>
 </div>

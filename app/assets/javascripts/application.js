@@ -122,7 +122,6 @@ Frame.append_last_frame = function(html, button){
   new_is_central = new_html.children(".central").length > 0;
   has_double_frames = $(".double_frame").length > 0
   if(has_double_frames && new_is_central){
-    console.log("Time to shift man!");
     Frame.offset_central_frame(new_html, position);
   }
 
@@ -130,7 +129,6 @@ Frame.append_last_frame = function(html, button){
   offset_frames = $(".with_offset")
   if(offset_frames.length == Frame.max_nb_vertical - 1){
      offset_frames.each( function(){
-       console.log($(this));
        Frame.remove_offset_central_frame($(this));
      });
   };
@@ -169,10 +167,18 @@ Frame.append_first_frame = function(html) {
   new_frame_is_double = new_html.hasClass("double_frame")
   top_frame = frame_li.children().first();
   top_frame_is_solo = (!top_frame.hasClass("double_frame")) || (top_frame.find(".frame.hidden").length != 0);
+
   if(new_frame_is_double && top_frame_is_solo){
     top_frame_hidden_position = Frame.position_of_frame(top_frame.find(".frame.hidden"));
     new_html.find("." + top_frame_hidden_position + "_frame").addClass("hidden");
     new_html.find("." + Frame.opposite(top_frame_hidden_position) + "_frame").addClass("col-md-offset-3");
+    
+    //Si on a des central frames en dessous, on les décale sur la branche non terminée
+    central_frames = $(".central");
+    offset_position = Frame.opposite( Frame.position_of_frame(new_html.find(".frame.no_children")) );
+    central_frames.each( function(){
+      Frame.offset_central_frame($(this), offset_position);
+    });
   };
 
   //on ajoute la nouvelle première frame
@@ -263,8 +269,10 @@ Frame.opposite = function(position){
 
 
 //Décale une frame à la position donnée
-Frame.offset_central_frame = function(frame_container, position){
-  frame = frame_container.children(".central").first();
+Frame.offset_central_frame = function(frame, position){
+  if(!frame.hasClass("central")){
+    frame = frame.children(".central").first();
+  }
   if(position == "right"){
     frame.removeClass("col-md-offset-3");
     frame.addClass("col-md-offset-6");
