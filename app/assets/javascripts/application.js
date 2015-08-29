@@ -163,14 +163,16 @@ Frame.append_first_frame = function(html) {
     Frame.show_hidden_cousins(position);
   }
   
-  //Si la nouvelle frame est double et qu'on a une simple en top position, on cache une des double-frames
+  //Si la nouvelle frame est double et qu'on a une simple ou des siblings en top position, on cache une des double-frames
   new_html = $(html)
   new_frame_is_double = new_html.hasClass("double_frame")
   top_frame = frame_li.children().first();
   top_frame_is_solo = (!top_frame.hasClass("double_frame")) || (top_frame.find(".frame.hidden").length != 0);
+  top_frame_is_siblings = top_frame.hasClass("siblings")
 
-  if(new_frame_is_double && top_frame_is_solo){
+  if(new_frame_is_double && (top_frame_is_solo || top_frame_is_siblings )){
     top_frame_hidden_position = Frame.position_of_frame(top_frame.find(".frame.hidden"));
+    //TODO : get position even if siblings
     new_html.find("." + top_frame_hidden_position + "_frame").addClass("hidden");
     new_html.find("." + Frame.opposite(top_frame_hidden_position) + "_frame").addClass("col-md-offset-3");
     

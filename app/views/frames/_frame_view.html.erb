@@ -1,21 +1,32 @@
 <% frame ||= Frame.new(name: "--NO FRAME--") %>
 <% has_prev = has_prev.nil? ? false : has_prev %>
+<% no_children = frame.id && frame.has_children? ? "" : "no_children" %>
+<% several_children = frame.id && frame.children.count > 1 ? "several_children" : "" %>
+<% position ||= "central" %>
+<% offset = "col-md-offset-3" if position == "central" %>
 
-<!-- prev button -->
-<% if frame.id && frame.parent_id %>
-  <% hidden_prev = "hidden" unless has_prev %>
-  <%= link_to "prev", "#", class: "btn btn-default prev #{hidden_prev}", "data-prev" => frame.id %>
-<% else %> 
-   Begin
-<% end %>
 
-<%= image_tag frame.picture.url, class: "img-responsive" %>
 
- <!-- next button -->
-<% if frame.id && frame.has_children? %>
-  <% hidden_next = "hidden" if has_prev %>
-  <%= link_to "next", "#", class: "btn btn-default next #{hidden_next}", "data-next" => frame.id %>
-<% else %>
-  finished
-<% end %>
+<div class="col-md-6 <%=offset%> frame <%= position %> <%=no_children%> <%=several_children%>">
 
+  <!-- prev button -->
+  <% if frame.id && frame.parent_id %>
+    <% hidden_prev = "hidden" unless has_prev %>
+    <%= link_to "prev", "#", class: "btn btn-default prev #{hidden_prev}", "data-prev" => frame.id %>
+  <% else %> 
+     Begin
+  <% end %>
+
+  <%= frame.name %>
+  <%= image_tag frame.picture.url, class: "img-responsive" %>
+
+  <!-- next button -->
+  <% if frame.id && frame.has_children? %>
+    <% hidden_next = "hidden" if has_prev %>
+    <%= link_to "next", "#", class: "btn btn-default next #{hidden_next}", "data-next" => frame.id %>
+  <% else %>
+    finished
+  <% end %>
+
+
+</div>

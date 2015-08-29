@@ -9,9 +9,7 @@
   <% no_children = frame.id && frame.has_children? ? "" : "no_children" %>
   <% several_children = frame.id && frame.children.count > 1 ? "several_children" : "" %>
 
-  <div class="col-md-6 columns frame <%=position%> <%=no_children%> <%=several_children%>">
-    <%= render partial: "frames/frame_view", locals: { frame: frame, has_prev: has_prev} %>
-  </div>
+  <%= render partial: "frames/frame_view", locals: { frame: frame, has_prev: has_prev, position: position } %>
 <% end %>
 </div>
 

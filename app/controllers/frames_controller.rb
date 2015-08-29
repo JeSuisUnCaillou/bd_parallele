@@ -8,9 +8,8 @@ class FramesController < ApplicationController
       child = frame.first_child
       begin
         nephew = child.cousin
-      rescue CousinHasOtherUncleError #TODO remplacer la frame "caca" par une frame générique indiquant qu'un choix est présent sur cette case, frame spéciale liée à ecomic par choice_frame_ecomic_id
-      #NAN ! il faut remplacer la frame caca par plutôt une solo frame qu'on offset en js
-        #nephew = Frame.new(name: "caca")
+      rescue CousinHasOtherUncleError
+        nephew = nil
       end
 
       if nephew
