@@ -126,7 +126,7 @@ Frame.append_last_frame = function(html, button){
     Frame.offset_central_frame(new_html, position);
   }
 
-  //TODO si on a que des with_offset, on les replace au centre
+  //si on a que des with_offset, on les replace au centre
   offset_frames = $(".with_offset")
   if(offset_frames.length == Frame.max_nb_vertical - 1){
      offset_frames.each( function(){
@@ -164,7 +164,7 @@ Frame.append_first_frame = function(html) {
     Frame.show_hidden_cousins(position);
   }
   
-  //Si la nouvelle frame est double et qu'on a une simple en top position, on cache une des frames
+  //Si la nouvelle frame est double et qu'on a une simple en top position, on cache une des double-frames
   new_html = $(html)
   new_frame_is_double = new_html.hasClass("double_frame")
   top_frame = frame_li.children().first();
@@ -287,11 +287,13 @@ Frame.remove_offset_central_frame = function(frame, position){
     frame.removeClass("left_frame");
     frame.addClass("central");
     frame.addClass("col-md-offset-3");
+    frame.removeClass("with_offset");
   } else if(frame.hasClass("right_frame")){
     frame.removeClass("right_frame");
     frame.addClass("central");
     frame.removeClass("col-md-offset-6");
     frame.addClass("col-md-offset-3");
+    frame.removeClass("with_offset");
   } else {
     console.log("This was not an offset central frame");
   }
