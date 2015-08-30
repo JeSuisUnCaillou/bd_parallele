@@ -33,13 +33,31 @@ function Reader(nb_vertical)
   //NEXT EVENT FOR BUTTON
   this.next_event=function(){
     button = $(this);
-    console.log("next !");
+    frame_id = button.attr("data-next");
+    $.ajax({ 
+             method: "GET",
+             url: "/ajax_next",
+             data: {frame_id: frame_id}
+           }
+    ).done(function(html) {
+      console.log("next !");
+      
+    });
   };
 
   //PREV EVENT FOR BUTTON
   this.prev_event=function(){
     button = $(this);
-    console.log("prev !");
+    frame_id = button.attr("data-prev");
+    $.ajax({ 
+             method: "GET",
+             url: "/ajax_prev",
+             data: {frame_id: frame_id}
+           }
+    ).done(function(html) {
+      console.log("prev !");
+      
+    });
   };
 
   //Binds both events on buttons;
