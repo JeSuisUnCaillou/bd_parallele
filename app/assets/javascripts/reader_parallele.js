@@ -14,26 +14,38 @@ $(document).on("ready page:load", function() {
 function Reader(nb_vertical)
 {
   //Attributes & Init
+
   this.element=$("#frames_vertical_list");
   this.max_nb_vertical=nb_vertical;
-  this.frame_rows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
-  this.frames=$(this.frame_rows).map(function(i,row){ return row.frames }).get();
+  this.frame_rows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) });//.get();
+  this.frames=$(this.frame_rows).map(function(i,row){ return row.frames });//.get();
+  var reader = this; //needed into events where "this" refers to a button
 
   //Methods
-  this.add_first_framerow=function(){
 
-  };
-  this.add_last_framerow=function(){
-
-  };
   this.organize_frames=function(){
 
   };
 
+  this.add_last_framerow=function(html){
+    //Creates the framerow
+    framerow=new FrameRow(html); 
+    //Appends the framerow
+    this.element.append(framerow.element); 
+    //Adds the framrow object to the list
+    this.frame_rows.push(framerow);
+    //Binds the new buttons
+    this.assign_buttons(framerow.element);
+  };
+
+  this.add_first_framerow=function(html){
+    
+  };
+
   //NEXT EVENT FOR BUTTON
   this.next_event=function(){
-    button = $(this);
-    frame_id = button.attr("data-next");
+    button=$(this);
+    frame_id=button.attr("data-next");
     $.ajax({ 
              method: "GET",
              url: "/ajax_next",
@@ -41,14 +53,20 @@ function Reader(nb_vertical)
            }
     ).done(function(html) {
       console.log("next !");
-      
+      //Creates and adds the new FrameRow
+      reader.add_last_framerow(html);
+      //Hides the button of the last row
+      last_framerow=$(reader.frame_rows).last();
+      console.log("la verité:");
+      console.log(last_framerow);
+      last_framerow.hide_buttons(); // WHY CAN'T THIS CALL FUCKING WORK ALREADY ? è_é
     });
   };
 
   //PREV EVENT FOR BUTTON
   this.prev_event=function(){
-    button = $(this);
-    frame_id = button.attr("data-prev");
+    button=$(this);
+    frame_id=button.attr("data-prev");
     $.ajax({ 
              method: "GET",
              url: "/ajax_prev",
@@ -81,13 +99,17 @@ function FrameRow(elem)
 {
   //Attributes & Init
   this.element=$(elem);
-  this.frames=this.element.children(".frame").map(function(i,e){ return new Frrame(e) }).get();
+  this.frames=this.element.children(".frame").map(function(i,e){ return new Frrame(e) });//.get();
   this.is_double=this.element.hasClass("double_frame");
   this.is_solo=this.element.hasClass("solo_frame");
   this.has_cousins=this.element.hasClass("cousins");
   this.has_siblings=this.element.hasClass("siblings");
 
   //Methods
+  this.hide_buttons=function(){//TODO do it for each Frrame
+   this.element.find(".next").addClass("hidden");
+   this.element.find(".prev").addClass("hidden");
+  };
 
   console.log("FrameRow up !");
   console.log(this);
@@ -110,6 +132,10 @@ function Frrame(elem) // "Frame" est déjà pris :(
 
   //Methods
 
+
+  ////////////////////////////////
+  // Init after defining functions;
+  
   console.log("Frame up !");
   console.log(this);
 }
