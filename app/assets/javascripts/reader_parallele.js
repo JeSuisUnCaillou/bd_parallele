@@ -58,6 +58,8 @@ function Reader(nb_vertical)
       last_framerow.hide_buttons();
       //Creates and adds the new FrameRow
       reader.add_last_framerow(html);
+      //Removes the first frame_row if there is more than nb_max_vertical
+      if(reader.frame_rows.length > reader.max_nb_vertical){ reader.element.children().first().remove(); };
     });
   };
 
