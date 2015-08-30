@@ -9,21 +9,23 @@ $(document).on("ready page:load", function() {
 
 });
 
-
+ /////////////////////////////////////////////////////////////////////////////////////////
 // READER OBJECT -------------------------------------------------------------------------
 function Reader(nb_vertical)
 {
+   ///////////////////////////////
   //Attributes & Init
 
   this.element=$("#frames_vertical_list");
   this.max_nb_vertical=nb_vertical;
   this.framerows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
   this.framerows=this.framerows;
-  this.frames=$(this.framerows).map(function(i,row){ return row.frames }).get();
   var reader = this; //needed into events where "this" refers to a button
 
+   ///////////////////////////////
   //Methods
 
+  //Organizes frames to be like they should. Yeah, that is quite vague...
   this.organize_frames=function(){
 
   };
@@ -126,19 +128,19 @@ function Reader(nb_vertical)
     elem.find(".prev").on("click", this.prev_event);
   };
 
-  ////////////////////////////////
-  // Init after defining functions;
-  
+   ///////////////////////////////
+  // Init after defining functions 
   this.assign_buttons(this.element);
   console.log( "Reader up !");
   console.log(this);
 };
 
 
-
+ /////////////////////////////////////////////////////////////////////////////////////////
 // FRAMEROW OBJECT -----------------------------------------------------------------------
 function FrameRow(elem)
 {
+   ///////////////////////////////
   //Attributes & Init
   this.element=$(elem);
   this.frames=this.element.children(".frame").map(function(i,e){ return new Frrame(e) }).get();
@@ -147,7 +149,9 @@ function FrameRow(elem)
   this.has_cousins=this.element.hasClass("cousins");
   this.has_siblings=this.element.hasClass("siblings");
 
-  //Methods
+
+   ///////////////////////////////
+  // Methods
   this.hide_buttons=function(){
     for(index = 0; index < this.frames.length; index++) {
       this.frames[index].hide_buttons();
@@ -168,15 +172,18 @@ function FrameRow(elem)
     };
   };
 
+   ///////////////////////////////
+  // Init after defining functions
   console.log("FrameRow up !");
   console.log(this);
 };
 
 
-
+ /////////////////////////////////////////////////////////////////////////////////////////
 // FRAMEROW OBJECT -----------------------------------------------------------------------
 function Frrame(elem) // "Frame" est déjà pris :(
 {
+   ///////////////////////////////
   //Attributes & Init
   this.element=$(elem);
   this.id=this.element.attr("data-id");
@@ -187,6 +194,7 @@ function Frrame(elem) // "Frame" est déjà pris :(
   this.next_button=this.element.find(".next");
   this.prev_button=this.element.find(".prev");
 
+   ///////////////////////////////
   //Methods
   this.hide_buttons=function(){
     this.next_button.addClass("hidden");
@@ -205,9 +213,8 @@ function Frrame(elem) // "Frame" est déjà pris :(
 
 
 
-  ////////////////////////////////
-  // Init after defining functions;
-  
+   ///////////////////////////////
+  // Init after defining functions
   console.log("Frame up !");
   console.log(this);
 }
