@@ -17,8 +17,9 @@ function Reader(nb_vertical)
 
   this.element=$("#frames_vertical_list");
   this.max_nb_vertical=nb_vertical;
-  this.frame_rows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
-  this.frames=$(this.frame_rows).map(function(i,row){ return row.frames }).get();
+  this.framerows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
+  this.framerows=this.framerows;
+  this.frames=$(this.framerows).map(function(i,row){ return row.frames }).get();
   var reader = this; //needed into events where "this" refers to a button
 
   //Methods
@@ -33,9 +34,14 @@ function Reader(nb_vertical)
     //Appends the framerow
     this.element.append(framerow.element); 
     //Adds the framrow object to the list
-    this.frame_rows.push(framerow);
+    this.framerows.push(framerow);
     //Binds the new buttons
     this.assign_buttons(framerow.element);
+  };
+
+  this.remove_first_framerow=function(html){
+    this.element.children().first().remove();
+    this.framerows.shift();//.shift() pops the first element
   };
 
   this.add_first_framerow=function(html){
@@ -54,12 +60,14 @@ function Reader(nb_vertical)
     ).done(function(html) {
       console.log("next !");
       //Hides the button of the last row
-      last_framerow=reader.frame_rows[reader.frame_rows.length - 1];
+      last_framerow=reader.framerows[reader.framerows.length - 1];//can only use "last" on jQuery Arrays
       last_framerow.hide_buttons();
       //Creates and adds the new FrameRow
       reader.add_last_framerow(html);
-      //Removes the first frame_row if there is more than nb_max_vertical
-      if(reader.frame_rows.length > reader.max_nb_vertical){ reader.element.children().first().remove(); };
+      //Removes the first framerow if there is more than nb_max_vertical, and reveals the first button
+      if(reader.framerows.length > reader.max_nb_vertical){
+        reader.remove_first_framerow(); 
+      }
     });
   };
 
