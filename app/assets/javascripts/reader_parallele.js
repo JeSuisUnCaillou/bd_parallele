@@ -28,25 +28,51 @@ function Reader(nb_vertical)
 
   };
 
+  //Add last framerow
   this.add_last_framerow=function(html){
-    //Creates the framerow
+    //Create the framerow
     framerow=new FrameRow(html); 
-    //Appends the framerow
+    //Append the framerow
     this.element.append(framerow.element); 
-    //Adds the framrow object to the list
+    //Add the framrow object to the list
     this.framerows.push(framerow);
-    //Binds the new buttons
+    //Bind the new buttons
     this.assign_buttons(framerow.element);
   };
 
-  this.remove_first_framerow=function(html){
-    this.element.children().first().remove();
-    this.framerows.shift();//.shift() pops the first element
+  //Add first framerow
+  this.add_first_framerow=function(html){
+    //Create the framerow
+    framerow=new FrameRow(html);
+    //Append the framerow
+    framerow.element.insertBefore(this.element.children().first());
+    //Add the framerow object to the list
+    this.framerows.unshift(framerow);//unshift adds a first element
+    //Bind the new buttons
+    this.assign_buttons(framerow.element);
   };
 
-  this.add_first_framerow=function(html){
-    
+  //Remove first framerow
+  this.remove_first_framerow=function(html){
+    //remove the first framerow element
+    this.element.children().first().remove();
+    //remove the first framerow form this.framerows
+    this.framerows.shift();//shift removes the first element
+    //Show the prev button of the new first framerow
+    new_first_framerow = this.framerows[0];
+    new_first_framerow.show_prev_buttons();
   };
+
+  //Remove last framerow
+  this.remove_last_framerow=function(){
+    //remove the last framerow element
+    this.element.children().last().remove();
+    //remove the last framerow form this.framerows
+    this.framerows.pop();
+    //Show the next button of the new last framerow
+    new_last_framerow = this.framerows[this.framerows.length - 1];
+    new_last_framerow.show_next_buttons();
+  }
 
   //NEXT EVENT FOR BUTTON
   this.next_event=function(){
@@ -64,7 +90,7 @@ function Reader(nb_vertical)
       last_framerow.hide_buttons();
       //Creates and adds the new FrameRow
       reader.add_last_framerow(html);
-      //Removes the first framerow if there is more than nb_max_vertical, and reveals the first button
+      //Removes the first framerow if there is more than nb_max_vertical, and reveals the first prev button
       if(reader.framerows.length > reader.max_nb_vertical){
         reader.remove_first_framerow(); 
       }
@@ -82,7 +108,15 @@ function Reader(nb_vertical)
            }
     ).done(function(html) {
       console.log("prev !");
-      
+      //Hides the button of the first row
+      first_framerow=reader.framerows[0];
+      first_framerow.hide_buttons();
+      //Creates and adds the new FrameRow
+      reader.add_first_framerow(html);
+      //Removes the first framerow if there is more than nb_max_vertical, and reveals the first prev button
+      if(reader.framerows.length > reader.max_nb_vertical){
+        reader.remove_last_framerow(); 
+      }
     });
   };
 
@@ -120,6 +154,20 @@ function FrameRow(elem)
     };
   };
 
+  //un-hide prev buttons
+  this.show_prev_buttons=function(){
+    for(index = 0; index < this.frames.length; index++){
+      this.frames[index].show_prev_button();
+    };
+  };
+
+  //un-hide next buttons
+  this.show_next_buttons=function(){
+    for(index = 0; index < this.frames.length; index++){
+      this.frames[index].show_next_button();
+    };
+  };
+
   console.log("FrameRow up !");
   console.log(this);
 };
@@ -144,6 +192,17 @@ function Frrame(elem) // "Frame" est déjà pris :(
     this.next_button.addClass("hidden");
     this.prev_button.addClass("hidden");
   };
+
+  //un-hide prev button
+  this.show_prev_button=function(){
+    this.prev_button.removeClass("hidden");
+  };
+
+  //un-hide next button
+  this.show_next_button=function(){
+    this.next_button.removeClass("hidden");
+  };
+
 
 
   ////////////////////////////////
