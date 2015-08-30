@@ -17,8 +17,8 @@ function Reader(nb_vertical)
 
   this.element=$("#frames_vertical_list");
   this.max_nb_vertical=nb_vertical;
-  this.frame_rows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) });//.get();
-  this.frames=$(this.frame_rows).map(function(i,row){ return row.frames });//.get();
+  this.frame_rows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
+  this.frames=$(this.frame_rows).map(function(i,row){ return row.frames }).get();
   var reader = this; //needed into events where "this" refers to a button
 
   //Methods
@@ -53,13 +53,11 @@ function Reader(nb_vertical)
            }
     ).done(function(html) {
       console.log("next !");
+      //Hides the button of the last row
+      last_framerow=reader.frame_rows[reader.frame_rows.length - 1];
+      last_framerow.hide_buttons();
       //Creates and adds the new FrameRow
       reader.add_last_framerow(html);
-      //Hides the button of the last row
-      last_framerow=$(reader.frame_rows).last();
-      console.log("la verité:");
-      console.log(last_framerow);
-      last_framerow.hide_buttons(); // WHY CAN'T THIS CALL FUCKING WORK ALREADY ? è_é
     });
   };
 
@@ -99,16 +97,17 @@ function FrameRow(elem)
 {
   //Attributes & Init
   this.element=$(elem);
-  this.frames=this.element.children(".frame").map(function(i,e){ return new Frrame(e) });//.get();
+  this.frames=this.element.children(".frame").map(function(i,e){ return new Frrame(e) }).get();
   this.is_double=this.element.hasClass("double_frame");
   this.is_solo=this.element.hasClass("solo_frame");
   this.has_cousins=this.element.hasClass("cousins");
   this.has_siblings=this.element.hasClass("siblings");
 
   //Methods
-  this.hide_buttons=function(){//TODO do it for each Frrame
-   this.element.find(".next").addClass("hidden");
-   this.element.find(".prev").addClass("hidden");
+  this.hide_buttons=function(){
+    for(index = 0; index < this.frames.length; index++) {
+      this.frames[index].hide_buttons();
+    };
   };
 
   console.log("FrameRow up !");
@@ -131,6 +130,10 @@ function Frrame(elem) // "Frame" est déjà pris :(
   this.prev_button=this.element.find(".prev");
 
   //Methods
+  this.hide_buttons=function(){
+    this.next_button.addClass("hidden");
+    this.prev_button.addClass("hidden");
+  };
 
 
   ////////////////////////////////
