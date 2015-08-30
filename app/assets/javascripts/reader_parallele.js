@@ -27,7 +27,7 @@ function Reader(nb_vertical)
 
   //Organizes frames to be like they should. Yeah, that is quite vague...
   this.organize_frames=function(){
-
+    //TODO : gros du taf
   };
 
   //Add last framerow
@@ -93,9 +93,9 @@ function Reader(nb_vertical)
       //Creates and adds the new FrameRow
       reader.add_last_framerow(html);
       //Removes the first framerow if there is more than nb_max_vertical, and reveals the first prev button
-      if(reader.framerows.length > reader.max_nb_vertical){
-        reader.remove_first_framerow(); 
-      }
+      if(reader.framerows.length > reader.max_nb_vertical){ reader.remove_first_framerow(); };
+      //Reorganizes frames
+      reader.organize_frames();
     });
   };
 
@@ -116,9 +116,9 @@ function Reader(nb_vertical)
       //Creates and adds the new FrameRow
       reader.add_first_framerow(html);
       //Removes the first framerow if there is more than nb_max_vertical, and reveals the first prev button
-      if(reader.framerows.length > reader.max_nb_vertical){
-        reader.remove_last_framerow(); 
-      }
+      if(reader.framerows.length > reader.max_nb_vertical){ reader.remove_last_framerow(); };
+      //Reorganizes frames
+      reader.organize_frames();
     });
   };
 
