@@ -2,7 +2,7 @@
 <% has_prev = has_prev.nil? ? false : has_prev %>
 <% siblings = siblings.nil? ? false : siblings %>
 
-<div class="col-md-12 row double_frame <%= siblings ? "siblings" : "cousins" %>">
+<div class="col-md-12 row frame_row double_frame <%= siblings ? "siblings" : "cousins" %>">
 <% frames.each_with_index do |frame, index| %>
   <%# We assume that there is only 2 frames %>
   <% position = (index == 0) ? "left_frame" : "right_frame" %>

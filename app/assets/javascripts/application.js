@@ -16,13 +16,27 @@
 //= require bootstrap
 //= require_tree .
 
-$(document).on("ready page:load", function() {
-//$( document ).ready(function() {
-    console.log( "ready to read !" );
 
-    Frame.add_next_event($(".next"));
-    Frame.add_prev_event($(".prev"));
-});
+
+
+
+//   /!\ WARNING /!\ /!\ WARNING /!\ /!\ WARNING /!\
+//   /!\ WARNING /!\ /!\ WARNING /!\ /!\ WARNING /!\
+
+// TOUT CE QUI SUIT EST UN CIMETIERE DE CODE DEGUEULASSE.
+
+//   /!\ WARNING /!\ /!\ WARNING /!\ /!\ WARNING /!\
+//   /!\ WARNING /!\ /!\ WARNING /!\ /!\ WARNING /!\
+
+
+
+//$(document).on("ready page:load", function() {
+//$( document ).ready(function() {
+    //console.log( "ready to read !" );
+
+    //Frame.add_next_event($(".next"));
+    //Frame.add_prev_event($(".prev"));
+//});
 
 
 //TODO : foutre en attribut de Frame les méthodes ajax, ainsi que les noms des classes et attributs des éléments du DOM dont on a besoin
