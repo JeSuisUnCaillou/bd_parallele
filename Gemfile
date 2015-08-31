@@ -4,6 +4,7 @@ gem 'bootstrap-generators', '~> 3.3.4'
 gem "awesome_print"
 gem "ancestry"
 gem "paperclip"
+gem "therubyracer"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
