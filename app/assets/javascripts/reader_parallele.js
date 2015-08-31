@@ -58,7 +58,7 @@ function Reader(nb_vertical)
       // If there is at least a sibling
       if (last_siblings != null){
         console.log("le y à l'envers");
-
+        
       } else { // If there is no siblings
         console.log("la double ligne, cassée et pas cassée");
         
@@ -260,7 +260,21 @@ function Frame(elem)
     this.element.removeClass("hidden");
   };
 
+  //goes to the left position
+  this.go_left=function(){
+    
+  };
+  
+  //goes to the right position
+  this.go_right=function(){
+    
+  };
 
+  //goes back to central position
+  this.go_central=function(){
+    
+  };
+  
    ///////////////////////////////
   // Init after defining functions
   console.log("Frame up !");
