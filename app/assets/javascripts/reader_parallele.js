@@ -21,6 +21,7 @@ function Reader(nb_vertical)
   this.framerows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
   var reader = this; //needed into events where "this" refers to a button
 
+
    ///////////////////////////////
   // Methods
 
@@ -50,17 +51,18 @@ function Reader(nb_vertical)
 
     //If there is at least one double framerow, every frame is centered
     if(double_framerows.length == 0){
-      console.log("tout le monde au centre");
+      //console.log("tout le monde au centre");
 
     } else { //If there is at least one double framerow
       var last_siblings=this.last_siblings_framerow();
 
       // If there is at least a sibling
       if (last_siblings != null){
-        console.log("le y à l'envers");
+        //TODO console.log("le y à l'envers");
+        
         
       } else { // If there is no siblings
-        console.log("la double ligne, cassée et pas cassée");
+        //console.log("la double ligne, cassée et pas cassée");
         
       };
     };
@@ -165,12 +167,14 @@ function Reader(nb_vertical)
     elem.find(".prev").on("click", this.prev_event);
   };
 
+
    ///////////////////////////////
   // Init after defining functions 
   this.assign_buttons(this.element);
   console.log( "Reader up !");
   console.log(this);
 };
+
 
 
  /////////////////////////////////////////////////////////////////////////////////////////
@@ -209,13 +213,13 @@ function FrameRow(elem)
     };
   };
 
-  //
 
    ///////////////////////////////
   // Init after defining functions
   //console.log("FrameRow up !");
   //console.log(this);
 };
+
 
 
  /////////////////////////////////////////////////////////////////////////////////////////
@@ -232,6 +236,7 @@ function Frame(elem)
   this.is_central=this.element.hasClass("central_frame");
   this.next_button=this.element.find(".next");
   this.prev_button=this.element.find(".prev");
+
 
    ///////////////////////////////
   //Methods
