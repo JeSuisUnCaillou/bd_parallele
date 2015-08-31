@@ -1,6 +1,6 @@
 class FrameValidator < ActiveModel::Validator
   def validate(record)
-    if record.siblings.keep_if{ |f| f.id != record.id }.count >= 2
+    if record.siblings.to_a.keep_if{ |f| f.id != record.id }.count >= 2
       record.errors[:error] << "Only 2 children allowed per frame"
     end
   end
