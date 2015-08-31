@@ -19,7 +19,6 @@ function Reader(nb_vertical)
   this.element=$("#frames_vertical_list");
   this.max_nb_vertical=nb_vertical;
   this.framerows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
-  this.framerows=this.framerows;
   var reader = this; //needed into events where "this" refers to a button
 
    ///////////////////////////////
