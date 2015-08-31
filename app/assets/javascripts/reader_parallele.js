@@ -143,7 +143,7 @@ function FrameRow(elem)
    ///////////////////////////////
   //Attributes & Init
   this.element=$(elem);
-  this.frames=this.element.children(".frame").map(function(i,e){ return new Frrame(e) }).get();
+  this.frames=this.element.children(".frame").map(function(i,e){ return new Frame(e) }).get();
   this.is_double=this.element.hasClass("double_frame");
   this.is_solo=this.element.hasClass("solo_frame");
   this.has_cousins=this.element.hasClass("cousins");
@@ -180,8 +180,8 @@ function FrameRow(elem)
 
 
  /////////////////////////////////////////////////////////////////////////////////////////
-// FRAMEROW OBJECT -----------------------------------------------------------------------
-function Frrame(elem) // "Frame" est déjà pris :(
+// FRAME OBJECT --------------------------------------------------------------------------
+function Frame(elem) // "Frame" est déjà pris :(
 {
    ///////////////////////////////
   //Attributes & Init
