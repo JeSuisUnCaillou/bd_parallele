@@ -22,7 +22,7 @@ function Reader(nb_vertical)
   var reader = this; //needed into events where "this" refers to a button
 
    ///////////////////////////////
-  //Methods
+  // Methods
 
   //Returns an array of all the double framerows
   this.double_framerows=function(){
@@ -34,7 +34,7 @@ function Reader(nb_vertical)
     return double_framerows;
   };
 
-  //Returns the last brothers-framrow index
+  //Returns the last framerow which has siblings
   this.last_siblings_framerow=function(){
     for(index=0; index < this.framerows.length; index++){ //TODO C'EST ICI BORDEL !
       var reverse_index = this.framerows.length - index - 1;
@@ -209,6 +209,8 @@ function FrameRow(elem)
     };
   };
 
+  //
+
    ///////////////////////////////
   // Init after defining functions
   //console.log("FrameRow up !");
@@ -248,6 +250,15 @@ function Frame(elem)
     this.next_button.removeClass("hidden");
   };
 
+  //hides itself
+  this.hide_itself=function(){
+    this.element.addClass("hidden");
+  };
+
+  //shows itself
+  this.show_itself=function(){
+    this.element.removeClass("hidden");
+  };
 
 
    ///////////////////////////////
