@@ -10,7 +10,7 @@ $(document).on("ready page:load", function() {
 });
 
  /////////////////////////////////////////////////////////////////////////////////////////
-// READER OBJECT -------------------------------------------------------------------------
+// READER OBJECT ------------------------------------------------------------------------
 function Reader(nb_vertical)
 {
    ///////////////////////////////
@@ -24,15 +24,53 @@ function Reader(nb_vertical)
    ///////////////////////////////
   //Methods
 
-  //Organizes frames to be like they should. Yeah, that is quite vague...
+  //Returns an array of all the double framerows
+  this.double_framerows=function(){
+    var double_framerows=[];
+    for(i=0; i < this.framerows.length; i++){
+      var framerow=this.framerows[i];
+      if(framerow.is_double){ double_framerows.push(framerow); };
+    };
+    return double_framerows;
+  };
+
+  //Returns the last brothers-framrow index
+  this.last_siblings_framerow=function(){
+    for(index=0; index < this.framerows.length; index++){ //TODO C'EST ICI BORDEL !
+      var reverse_index = this.framerows.length - index - 1;
+      var framerow=this.framerows[reverse_index];
+      if(framerow.has_siblings){ return framerow; };
+    };
+    return null;
+  };
+
+  //TODO Organizes frames to be like they should. Yeah, that is quite vague...
   this.organize_frames=function(){
-    //TODO : gros du taf
+    var double_framerows=this.double_framerows();
+
+    //If there is at least one double framerow, every frame is centered
+    if(double_framerows.length == 0){
+      console.log("tout le monde au centre");
+
+    } else { //If there is at least one double framerow
+      var last_siblings=this.last_siblings_framerow();
+
+      // If there is at least a sibling
+      if (last_siblings != null){
+        console.log("le y à l'envers");
+
+      } else { // If there is no siblings
+        console.log("la double ligne, cassée et pas cassée");
+        
+      };
+    };
+    
   };
 
   //Add last framerow
   this.add_last_framerow=function(html){
     //Create the framerow
-    framerow=new FrameRow(html); 
+    var framerow=new FrameRow(html); 
     //Append the framerow
     this.element.append(framerow.element); 
     //Add the framrow object to the list
@@ -44,7 +82,7 @@ function Reader(nb_vertical)
   //Add first framerow
   this.add_first_framerow=function(html){
     //Create the framerow
-    framerow=new FrameRow(html);
+    var framerow=new FrameRow(html);
     //Append the framerow
     framerow.element.insertBefore(this.element.children().first());
     //Add the framerow object to the list
@@ -60,7 +98,7 @@ function Reader(nb_vertical)
     //remove the first framerow form this.framerows
     this.framerows.shift();//shift removes the first element
     //Show the prev button of the new first framerow
-    new_first_framerow = this.framerows[0];
+    var new_first_framerow = this.framerows[0];
     new_first_framerow.show_prev_buttons();
   };
 
@@ -71,7 +109,7 @@ function Reader(nb_vertical)
     //remove the last framerow form this.framerows
     this.framerows.pop();
     //Show the next button of the new last framerow
-    new_last_framerow = this.framerows[this.framerows.length - 1];
+    var new_last_framerow = this.framerows[this.framerows.length - 1];
     new_last_framerow.show_next_buttons();
   }
 
@@ -87,7 +125,7 @@ function Reader(nb_vertical)
     ).done(function(html) {
       console.log("next !");
       //Hides the button of the last row
-      last_framerow=reader.framerows[reader.framerows.length - 1];//can only use "last" on jQuery Arrays
+      var last_framerow=reader.framerows[reader.framerows.length - 1];//can only use "last" on jQuery Arrays
       last_framerow.hide_buttons();
       //Creates and adds the new FrameRow
       reader.add_last_framerow(html);
@@ -110,7 +148,7 @@ function Reader(nb_vertical)
     ).done(function(html) {
       console.log("prev !");
       //Hides the button of the first row
-      first_framerow=reader.framerows[0];
+      var first_framerow=reader.framerows[0];
       first_framerow.hide_buttons();
       //Creates and adds the new FrameRow
       reader.add_first_framerow(html);
@@ -136,7 +174,7 @@ function Reader(nb_vertical)
 
 
  /////////////////////////////////////////////////////////////////////////////////////////
-// FRAMEROW OBJECT -----------------------------------------------------------------------
+// FRAMEROW OBJECT ----------------------------------------------------------------------
 function FrameRow(elem)
 {
    ///////////////////////////////
@@ -173,14 +211,14 @@ function FrameRow(elem)
 
    ///////////////////////////////
   // Init after defining functions
-  console.log("FrameRow up !");
-  console.log(this);
+  //console.log("FrameRow up !");
+  //console.log(this);
 };
 
 
  /////////////////////////////////////////////////////////////////////////////////////////
-// FRAME OBJECT --------------------------------------------------------------------------
-function Frame(elem) // "Frame" est déjà pris :(
+// FRAME OBJECT -------------------------------------------------------------------------
+function Frame(elem)
 {
    ///////////////////////////////
   //Attributes & Init
