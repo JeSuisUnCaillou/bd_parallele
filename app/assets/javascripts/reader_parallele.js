@@ -260,19 +260,39 @@ function Frame(elem)
     this.element.removeClass("hidden");
   };
 
+  //removes position
+  this.reset_position=function(){
+    this.element.removeClass("left_frame");
+    this.element.removeClass("right_frame");
+    this.element.removeClass("central_frame");
+    this.is_left = false;
+    this.is_right = false;
+    this.is_central = false;
+    this.element.removeClass("col-md-offset-3");
+    this.element.removeClass("col-md-offset-6");
+  };
+
   //goes to the left position
   this.go_left=function(){
-    
+    this.reset_position();
+    this.element.addClass("left_frame");
+    this.is_left = true;
   };
   
   //goes to the right position
   this.go_right=function(){
-    
+    this.reset_position();
+    this.element.addClass("col-md-offset-6");
+    this.element.addClass("right_frame");
+    this.is_right = true; 
   };
 
   //goes back to central position
   this.go_central=function(){
-    
+    this.reset_position();
+    this.element.addClass("col-md-offset-3");
+    this.element.addClass("central_frame");
+    this.is_central = true;
   };
   
    ///////////////////////////////
