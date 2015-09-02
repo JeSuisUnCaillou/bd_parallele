@@ -19,17 +19,29 @@ function Reader(nb_vertical)
   this.element=$("#frames_vertical_list");
   this.max_nb_vertical=nb_vertical;
   this.framerows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
+  this.last_clicked_frame = null;
   var reader = this; //needed into events where "this" refers to a button
 
 
    ///////////////////////////////
   // Methods
+  
+  //Finds a frame by id
+  this.find_by_id=function(id){
+    console.log("fetch the frame id: " + id);
+    for(var index=0; index < this.framerows.length; index++){
+      var framerow = this.framerows[index];
+      var frame = framerow.find_by_id(id);
+      if(frame != null){ return frame; };
+    }
+    return null;
+  };
 
   //Returns an array of all the double framerows
   this.double_framerows=function(){
     var double_framerows=[];
-    for(i=0; i < this.framerows.length; i++){
-      var framerow=this.framerows[i];
+    for(var index=0; index < this.framerows.length; index++){
+      var framerow=this.framerows[index];
       if(framerow.is_double){ double_framerows.push(framerow); };
     };
     return double_framerows;
@@ -37,7 +49,7 @@ function Reader(nb_vertical)
 
   //Returns the last framerow which has siblings
   this.last_siblings_framerow=function(){
-    for(index=0; index < this.framerows.length; index++){ //TODO C'EST ICI BORDEL !
+    for(var index=0; index < this.framerows.length; index++){
       var reverse_index = this.framerows.length - index - 1;
       var framerow=this.framerows[reverse_index];
       if(framerow.has_siblings){ return framerow; };
@@ -49,18 +61,24 @@ function Reader(nb_vertical)
   this.organize_frames=function(){
     var double_framerows=this.double_framerows();
 
-    //If there is at least one double framerow, every frame is centered
+    //If there no double framerows, every frame is centered
     if(double_framerows.length == 0){
       //console.log("tout le monde au centre");
-
+      for(var index=0; index < this.framerows.length; index++){
+        this.framerows[index].center_solo_frame();
+      };
     } else { //If there is at least one double framerow
       var last_siblings=this.last_siblings_framerow();
+      var index_of_last_siblings = this.framerows.indexOf(last_siblings);
 
       // If there is at least a sibling
-      if (last_siblings != null){
-        //TODO console.log("le y à l'envers");
-        
-        
+      if (last_siblings != null && index_of_last_siblings > 0){
+        //console.log("le y à l'envers");
+        //TODO NEED last_clicked_frame
+        for(var index=index_of_last_siblings - 1; index >= 0; index--){
+          //var framerow = this.framerows[index];
+        };
+
       } else { // If there is no siblings
         //console.log("la double ligne, cassée et pas cassée");
         
@@ -136,6 +154,7 @@ function Reader(nb_vertical)
       //Reorganizes frames
       reader.organize_frames();
     });
+    reader.last_clicked_frame = reader.find_by_id(frame_id);
   };
 
   //PREV EVENT FOR BUTTON
@@ -159,6 +178,7 @@ function Reader(nb_vertical)
       //Reorganizes frames
       reader.organize_frames();
     });
+    reader.last_clicked_frame = reader.find_by_id(frame_id);
   };
 
   //Binds both events on buttons;
@@ -194,25 +214,42 @@ function FrameRow(elem)
    ///////////////////////////////
   // Methods
   this.hide_buttons=function(){
-    for(index = 0; index < this.frames.length; index++) {
+    for(var index = 0; index < this.frames.length; index++) {
       this.frames[index].hide_buttons();
     };
   };
 
   //un-hide prev buttons
   this.show_prev_buttons=function(){
-    for(index = 0; index < this.frames.length; index++){
+    for(var index = 0; index < this.frames.length; index++){
       this.frames[index].show_prev_button();
     };
   };
 
   //un-hide next buttons
   this.show_next_buttons=function(){
-    for(index = 0; index < this.frames.length; index++){
+    for(var index = 0; index < this.frames.length; index++){
       this.frames[index].show_next_button();
     };
   };
+  
+  //Finds a frame by id
+  this.find_by_id=function(id){
+    for(var index=0; index < this.frames.length; index++){
+      frame = this.frames[index];
+      if(frame.id == id){ return frame; };
+    }
+    return null;
+  };
 
+  //center solo frame
+  this.center_solo_frame=function(){
+    if(this.is_solo){
+      this.frames[0].go_central();
+    } else {
+      console.log("can't center a double frame");
+    }
+  };
 
    ///////////////////////////////
   // Init after defining functions
@@ -230,7 +267,7 @@ function Frame(elem)
   //Attributes & Init
   this.element=$(elem);
   this.id=this.element.attr("data-id");
-  this.parent_id=this.element.attr("data-parent_id");
+  this.parent_id=this.element.attr("data-parent-id");
   this.is_left=this.element.hasClass("left_frame");
   this.is_right=this.element.hasClass("right_frame");
   this.is_central=this.element.hasClass("central_frame");
@@ -302,8 +339,8 @@ function Frame(elem)
   
    ///////////////////////////////
   // Init after defining functions
-  console.log("Frame up !");
-  console.log(this);
+  //console.log("Frame up !");
+  //console.log(this);
 }
 
 
