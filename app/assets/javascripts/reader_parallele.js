@@ -20,6 +20,7 @@ function Reader(nb_vertical)
   this.max_nb_vertical=nb_vertical;
   this.framerows=this.element.children(".frame_row").map(function(i,e){ return new FrameRow(e) }).get();
   this.last_clicked_frame = null;
+  this.last_clicked_position = null;
   var reader = this; //needed into events where "this" refers to a button
 
 
@@ -28,7 +29,6 @@ function Reader(nb_vertical)
   
   //Finds a frame by id
   this.find_by_id=function(id){
-    console.log("fetch the frame id: " + id);
     for(var index=0; index < this.framerows.length; index++){
       var framerow = this.framerows[index];
       var frame = framerow.find_by_id(id);
@@ -74,9 +74,9 @@ function Reader(nb_vertical)
       // If there is at least a sibling
       if (last_siblings != null && index_of_last_siblings > 0){
         //console.log("le y à l'envers");
-        //TODO NEED last_clicked_frame
         for(var index=index_of_last_siblings - 1; index >= 0; index--){
-          //var framerow = this.framerows[index];
+          var framerow = this.framerows[index];
+          framerow.go_central(this.last_clicked_position);//TODO fait d'la merde
         };
 
       } else { // If there is no siblings
@@ -137,6 +137,8 @@ function Reader(nb_vertical)
   this.next_event=function(){
     button=$(this);
     frame_id=button.attr("data-next");
+    reader.last_clicked_frame = reader.find_by_id(frame_id);
+    reader.last_clicked_position = reader.last_clicked_frame.position();
     $.ajax({ 
              method: "GET",
              url: "/ajax_next",
@@ -154,13 +156,14 @@ function Reader(nb_vertical)
       //Reorganizes frames
       reader.organize_frames();
     });
-    reader.last_clicked_frame = reader.find_by_id(frame_id);
   };
 
   //PREV EVENT FOR BUTTON
   this.prev_event=function(){
     button=$(this);
     frame_id=button.attr("data-prev");
+    reader.last_clicked_frame = reader.find_by_id(frame_id);
+    reader.last_clicked_position = reader.last_clicked_frame.position();
     $.ajax({ 
              method: "GET",
              url: "/ajax_prev",
@@ -178,7 +181,6 @@ function Reader(nb_vertical)
       //Reorganizes frames
       reader.organize_frames();
     });
-    reader.last_clicked_frame = reader.find_by_id(frame_id);
   };
 
   //Binds both events on buttons;
@@ -236,7 +238,7 @@ function FrameRow(elem)
   //Finds a frame by id
   this.find_by_id=function(id){
     for(var index=0; index < this.frames.length; index++){
-      frame = this.frames[index];
+      var frame = this.frames[index];
       if(frame.id == id){ return frame; };
     }
     return null;
@@ -248,6 +250,19 @@ function FrameRow(elem)
       this.frames[0].go_central();
     } else {
       console.log("can't center a double frame");
+    }
+  };
+
+  //if there is two frames, keep only the one at "position" and go central
+  this.go_central=function(position){
+    console.log(position);
+    for(var index=0; index < this.frames.length; index++){
+      var frame=this.frames[index];
+      if(frame.position() == position){
+        frame.go_central();
+      } else if(frame.position() != "central"){
+        frame.hide_itself();
+      }
     }
   };
 
@@ -336,6 +351,30 @@ function Frame(elem)
     this.element.addClass("central_frame");
     this.is_central = true;
   };
+
+  //Returns "left", "right" or "central"
+  this.position=function(){
+    if(this.is_left){
+      return "left";
+    } else if(this.is_right){
+      return "right";
+    } else if(this.is_central){
+      return "central";
+    } else {
+      console.log("unknown position");
+      return null;
+    } 
+  };
+
+  /*this.go_same_column_than=function(frame){
+    if(frame.is_left){
+      this.go_left();
+    } else if(frame.is_right){
+      this.go_right();
+    } else if(frame.is_central){
+      this.go_central();
+    }
+  }*/
   
    ///////////////////////////////
   // Init after defining functions
