@@ -76,14 +76,17 @@ function Reader(nb_vertical)
         //console.log("le y à l'envers");
         for(var index=index_of_last_siblings - 1; index >= 0; index--){
           var framerow = this.framerows[index];
-          framerow.go_central(this.last_clicked_position);//TODO fait d'la merde
+          framerow.go_central(this.last_clicked_position);
         };
 
       } else { // If there is no siblings
         //console.log("la double ligne, cassée et pas cassée");
-        
-      };
-    };
+        for(var index=0; index < this.framerows.length; index++){
+          var framerow=this.framerows[index];
+          framerow.show_itself();//TODO replacer à sa position d'origine
+        };
+      }
+    }
     
   };
 
