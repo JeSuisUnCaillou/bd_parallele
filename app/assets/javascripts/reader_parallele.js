@@ -80,10 +80,10 @@ function Reader(nb_vertical)
         };
 
       } else { // If there is no siblings
-        //console.log("la double ligne, cassée et pas cassée");
+        console.log("la double ligne, cassée et pas cassée");
         for(var index=0; index < this.framerows.length; index++){
           var framerow=this.framerows[index];
-          framerow.show_itself();//TODO replacer à sa position d'origine
+          framerow.show_all_frames();
         };
       }
     }
@@ -269,6 +269,15 @@ function FrameRow(elem)
     }
   };
 
+  //reveals all frames and put them on their original places
+  this.show_all_frames=function(){
+    for(var index=0; index < this.frames.length; index++){
+      var frame = this.frames[index];
+      frame.go_back();
+      frame.show_itself();
+    }
+  }
+
    ///////////////////////////////
   // Init after defining functions
   //console.log("FrameRow up !");
@@ -286,6 +295,7 @@ function Frame(elem)
   this.element=$(elem);
   this.id=this.element.attr("data-id");
   this.parent_id=this.element.attr("data-parent-id");
+  this.original_pos=this.element.attr("data-original-pos");
   this.is_left=this.element.hasClass("left_frame");
   this.is_right=this.element.hasClass("right_frame");
   this.is_central=this.element.hasClass("central_frame");
@@ -364,9 +374,30 @@ function Frame(elem)
     } else if(this.is_central){
       return "central";
     } else {
-      console.log("unknown position");
+      console.log("position: unknown position");
       return null;
     } 
+  };
+
+  //goes to a given position
+  this.go_to=function(pos){
+    if(pos=="left"){
+      this.go_left();
+    } else if(pos=="right"){
+      this.go_right();
+    } else if(pos=="central"){
+      this.go_central();
+    } else {
+      console.log("go_to: unknown position");
+      return null;
+    }
+  };
+
+  //Goes back to its original position
+  this.go_back=function(){
+    if(this.position() != this.original_pos){
+      this.go_to(this.original_pos);
+    }
   };
 
   /*this.go_same_column_than=function(frame){
