@@ -76,14 +76,18 @@ function Reader(nb_vertical)
         console.log("le y à l'envers");
         for(var index=index_of_last_siblings - 1; index >= 0; index--){
           var framerow = this.framerows[index];
-          framerow.go_central(this.last_clicked_original_pos);//TODO go central -> only the frame that has its chidlren displayed below, not the one of same position
+          framerow.go_central(this.last_clicked_original_pos);
         };
 
       } else { // If there is no siblings
         console.log("la double ligne, cassée et pas cassée");
         for(var index=0; index < this.framerows.length; index++){
           var framerow=this.framerows[index];
-          framerow.show_all_frames();
+          if(framerow.is_solo){
+            framerow.align_to_parent(this.framerows[index-1]);//il y aura toujours un parent double
+          } else {
+            framerow.show_all_frames();
+          }
         };
       }
     }
@@ -258,10 +262,8 @@ function FrameRow(elem)
 
   //if there is two frames, keep only the one at "position" and go central
   this.go_central=function(position){
-    console.log("go_central " + position);
     for(var index=0; index < this.frames.length; index++){
       var frame=this.frames[index];
-      console.log("frame: " + frame.original_pos);
       if(frame.original_pos == position){
         frame.go_central();
       } else if(frame.position() != "central"){
@@ -276,6 +278,17 @@ function FrameRow(elem)
       var frame = this.frames[index];
       frame.go_back();
       frame.show_itself();
+    }
+  }
+
+  //aligns the frames to their parent's position
+  this.align_to_parent=function(parent_framerow){
+    for(var index=0; index < this.frames.length; index++){
+      var frame = this.frames[index];
+      var parent_frame = parent_framerow.find_by_id(frame.parent_id);
+      if(parent_frame){
+        frame.go_to(parent_frame.position());
+      }
     }
   }
 
