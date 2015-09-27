@@ -3,12 +3,12 @@
 <% no_children = frame.id && frame.has_children? ? "" : "no_children" %>
 <% several_children = frame.id && frame.children.count > 1 ? "several_children" : "" %>
 <% position ||= "central_frame" %>
-<% original_pos = position %>
+<% original_pos = position[/(central|left|right)_frame/, 1] %>
 <% offset = "col-md-offset-3" if position == "central_frame" %>
 
 
 
-<div class="col-md-6 <%=offset%> frame <%= position %> <%=no_children%> <%=several_children%>" data-parent-id="<%=frame.parent_id%>" data-id="<%=frame.id%>" data-original-pos="<%=original_pos[/(central|left|right)_frame/, 1]%>">
+<div class="col-md-6 <%=offset%> frame <%= position %> <%=no_children%> <%=several_children%>" data-parent-id="<%=frame.parent_id%>" data-id="<%=frame.id%>" data-original-pos="<%=original_pos%>">
 
   <!-- prev button -->
   <% if frame.id && frame.parent_id %>
